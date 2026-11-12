@@ -3,961 +3,716 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Agent Builder's Map</title>
-<meta name="description" content="Day 1 intro tour for Agentic AI for Impact: what agents are, why they matter, what can go wrong, and what you'll build in 8 days.">
+<title>Agentic AI for Impact</title>
+<meta name="description" content="Day 1 intro for Agentic AI for Impact: what agents are, why now, what can go wrong, and the agent you'll build for impact.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@700&family=Space+Mono:wght@400;700&family=Poppins:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --navy:#2E3066;
-  --ink:#1F2040;
-  --soft:#4A4C6A;
-  --line:#B8B9CC;
-  --peach:#F6B48A;
-  --bg:#FFFFFF;
-  --wash:#F5F5F8;
-  --right:#17694A;
-  --wrong:#A4262C;
-  --fs:clamp(17px, 0.9vw + 9px, 24px);
+  --navy:#2E3066; --ink:#1F2040; --soft:#5E6080; --line:#DCDEEC; --pale:#E7E9F2;
+  --peach:#F6B48A; --bg:#F3F3F8; --paper:#fff; --right:#17694A; --wrong:#A4262C;
+  --radius:14px; --shadow:0 1px 3px rgba(20,22,60,.06);
+  --fs:clamp(16px, 0.8vw + 9px, 22px);
 }
 *{box-sizing:border-box}
 html{font-size:var(--fs)}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.45;-webkit-text-size-adjust:100%}
-button,input{font:inherit;color:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+button{font:inherit;color:inherit}
 a{color:var(--navy);text-underline-offset:3px}
-:focus-visible{outline:3px solid var(--navy);outline-offset:3px;border-radius:4px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:3px solid var(--navy);outline-offset:3px;border-radius:6px}
+.hide{display:none!important}
+.mono{font-family:"Space Mono",ui-monospace,monospace}
 
-/* top bar */
-.top{position:sticky;top:0;z-index:5;background:var(--bg);display:flex;align-items:center;gap:1rem;padding:.55rem 1.4rem;border-bottom:2px solid var(--wash)}
-.brand{font-weight:700;color:var(--navy);white-space:nowrap;background:none;border:0;padding:0;cursor:pointer;font-size:.9rem}
-.stops{display:flex;gap:.15rem;flex:1;justify-content:center;flex-wrap:nowrap;overflow:hidden}
-.stops button{background:none;border:0;padding:.2rem .5rem;font-size:.7rem;color:var(--soft);cursor:pointer;border-radius:4px;white-space:nowrap}
-.stops button[aria-current="step"]{color:var(--navy);font-weight:700;box-shadow:inset 0 -3px 0 var(--peach)}
-.count{font-weight:700;color:var(--navy);font-size:.85rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+/* progress + top nav */
+.prog{position:fixed;top:0;left:0;right:0;height:4px;display:flex;gap:3px;z-index:7}
+.prog i{flex:1;background:var(--line)}
+.prog i.done{background:var(--navy)}
+.prog i.now{background:var(--peach)}
+.top{position:sticky;top:0;z-index:6;display:flex;justify-content:center;padding:1rem 1rem .4rem}
+.pills{display:flex;gap:.15rem;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.25rem;box-shadow:var(--shadow)}
+.pills button{background:none;border:0;border-radius:999px;padding:.35rem .8rem;font-size:.68rem;font-weight:600;color:var(--ink);cursor:pointer;white-space:nowrap}
+.pills button:hover{background:var(--pale)}
+.pills button[aria-current="step"]{background:var(--navy);color:#fff}
 
 /* stage */
-main{max-width:1180px;margin:0 auto;padding:1.6rem 1.4rem 6rem}
+main{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:2.2rem 1.6rem 8rem}
 section.stop{display:none}
 section.stop.on{display:block;animation:in .35s ease-out}
-@keyframes in{from{transform:translateY(8px)}to{transform:none}}
-h1,h2,h3{color:var(--navy);line-height:1.12;margin:0;font-weight:700}
-h2{font-size:2.05rem;margin-bottom:.45rem}
-h3{font-size:1.15rem;margin-bottom:.3rem}
-p{margin:.35rem 0 .7rem;max-width:44em}
-.lead{font-size:1.12rem;max-width:40em}
-h1[tabindex="-1"]:focus,h2[tabindex="-1"]:focus{outline:none}
-.ask{font-size:1.05rem;margin:1rem 0;max-width:40em}
-.ask b{color:var(--navy)}
+@keyframes in{from{opacity:.3;transform:translateY(10px)}to{opacity:1;transform:none}}
+h1,h2,h3{color:var(--navy);margin:0;font-weight:700}
+h1,h2{font-family:"Martian Mono",ui-monospace,monospace;letter-spacing:-.02em;line-height:1.08}
+h2{font-size:2.05rem;margin-bottom:.6rem}
+h3{font-size:1.1rem;line-height:1.2;margin-bottom:.3rem}
+.kicker{font-family:"Space Mono",ui-monospace,monospace;font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;color:var(--soft);margin:0 0 .9rem}
+p{margin:.35rem 0 .7rem;max-width:40em}
+.lead{font-size:1.08rem;color:var(--ink);max-width:36em}
 .small{font-size:.72rem;color:var(--soft)}
-.sources{font-size:.66rem;color:var(--soft);margin-top:1.4rem;max-width:none}
-.sources a{color:var(--soft)}
+.credit{font-size:.62rem;color:var(--soft);margin:.4rem 0 0}
+.credit a{color:var(--soft)}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
 
 /* buttons */
-.btn{display:inline-block;background:var(--navy);color:#fff;border:2px solid var(--navy);border-radius:6px;padding:.45rem 1rem;font-weight:700;cursor:pointer;text-decoration:none;line-height:1.25}
-.btn:hover{background:var(--ink);border-color:var(--ink)}
-.btn.ghost{background:#fff;color:var(--navy)}
-.btn.ghost:hover{background:var(--wash)}
-.btn[disabled]{cursor:default;background:#fff;color:var(--soft);border-color:var(--line)}
+.btn{display:inline-flex;align-items:center;gap:.4rem;background:var(--navy);color:#fff;border:2px solid var(--navy);border-radius:10px;padding:.6rem 1.25rem;font-weight:600;cursor:pointer;line-height:1.2}
+.btn:hover{background:var(--ink)}
+.btn.ghost{background:var(--paper);color:var(--navy);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--navy)}
+.btn[disabled]{opacity:.35;cursor:default}
 .row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
-.opt{background:#fff;border:2px solid var(--navy);color:var(--navy);border-radius:6px;padding:.4rem .9rem;font-weight:700;cursor:pointer;text-align:left;line-height:1.25}
-.opt:hover{background:var(--wash)}
-.opt.picked{background:var(--navy);color:#fff}
+.opt{background:var(--paper);border:1.5px solid var(--navy);color:var(--navy);border-radius:10px;padding:.55rem 1.1rem;font-weight:600;cursor:pointer;line-height:1.2;text-align:left}
+.opt:hover{background:var(--pale)}
 .opt.is-right{background:var(--right);border-color:var(--right);color:#fff}
 .opt.is-wrong{background:var(--wrong);border-color:var(--wrong);color:#fff}
 .opt[disabled]{cursor:default}
-.fb{margin:.6rem 0 0;font-size:.95rem;max-width:42em}
-.fb b.r{color:var(--right)} .fb b.w{color:var(--wrong)}
-.pop{animation:pop .28s ease-out}
-@keyframes pop{0%{transform:scale(.96)}60%{transform:scale(1.03)}100%{transform:none}}
-.hide{display:none!important}
+.fb{margin:.7rem 0 0;font-size:.98rem;max-width:36em}
+.pop{animation:pop .3s ease-out}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.02)}100%{transform:none}}
+
+/* discuss card */
+.talk{margin-top:1.6rem;padding:1rem 1.2rem;max-width:44em;border-left:5px solid var(--peach)}
+.talk .lbl{font-size:.72rem;font-weight:700;color:var(--navy);margin:0 0 .25rem}
+.talk p{margin:0;font-size:1rem;font-weight:600}
+.talk .btn{margin-top:.7rem;font-size:.85rem;padding:.4rem .9rem}
 
 /* bottom nav */
-.bottom{position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:2px solid var(--wash);display:flex;justify-content:space-between;align-items:center;padding:.55rem 1.4rem;z-index:5}
-.bottom .mid{font-size:.7rem;color:var(--soft)}
-.bottom .btn{min-width:6.5rem;text-align:center}
+.bottom{position:fixed;left:50%;transform:translateX(-50%);bottom:1rem;z-index:6;display:flex;align-items:center;gap:.6rem;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.3rem;box-shadow:var(--shadow)}
+.bottom .btn{border-radius:999px;padding:.45rem 1.1rem;font-size:.85rem}
+.bottom .btn.ghost{border-color:transparent}
+.bottom .mid{font-size:.72rem;color:var(--soft);padding:0 .4rem;white-space:nowrap}
+.bottom .mid b{color:var(--ink);font-weight:600;margin-left:.4rem}
 
-/* stop 1 */
-.welcome{min-height:calc(100vh - 11rem);display:flex;flex-direction:column;justify-content:center}
-.welcome h1{font-size:3.6rem;letter-spacing:0;margin:0 0 .6rem}
-.welcome .who{color:var(--soft);font-size:.85rem;margin-bottom:1.2rem}
-.welcome .row{margin-top:1.4rem}
-.textlink{background:none;border:0;padding:.3rem 0;color:var(--navy);text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-weight:700}
+/* 1 hook */
+.hook{min-height:calc(100vh - 14rem);display:flex;flex-direction:column;justify-content:center}
+.hook h1{font-size:3.9rem;margin:0 0 .5rem}
+.hook .sub{font-size:1.9rem;font-weight:300;color:var(--navy);margin:0 0 1.2rem;line-height:1.2}
+.hook .big{font-size:1.1rem;max-width:30em;margin:0 0 1.4rem}
+.hook .big b{color:var(--navy)}
+.hook .meta{margin-top:1.6rem;padding-top:1rem;border-top:1px solid var(--line);max-width:32rem;font-size:.72rem;color:var(--soft)}
 
-/* hands up */
-.hands{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin:1.2rem 0 1.4rem}
-.hand p{margin:0 0 .5rem;font-weight:700}
-.tally{display:flex;align-items:center;gap:.6rem}
-.tally output{font-size:2.2rem;font-weight:700;color:var(--navy);min-width:2.2ch;text-align:center;font-variant-numeric:tabular-nums}
-.tally button{width:2.4rem;height:2.4rem;border-radius:50%;border:2px solid var(--navy);background:#fff;color:var(--navy);font-weight:700;font-size:1.2rem;cursor:pointer;line-height:1}
-.tally button:hover{background:var(--wash)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;align-items:start}
-.goals{list-style:none;padding:0;margin:.5rem 0}
-.goals li{margin:.2rem 0}
-.goals button{display:flex;gap:.7rem;align-items:flex-start;background:none;border:0;padding:.35rem 0;text-align:left;cursor:pointer;width:100%}
-.box{flex:none;width:1.25rem;height:1.25rem;border:2px solid var(--navy);border-radius:4px;margin-top:.12rem;display:grid;place-items:center;color:#fff;font-size:.8rem;font-weight:700}
-.goals button[aria-pressed="true"] .box{background:var(--navy)}
+/* 2 agent run */
+.runwrap{display:grid;grid-template-columns:1fr 1.3fr;gap:2.4rem;align-items:start;margin-top:1.2rem}
+.trace{padding:1rem 1.1rem;min-height:18rem;max-height:56vh;overflow:auto;scroll-behavior:smooth}
+.trace .bar{display:flex;gap:.35rem;margin:-.2rem 0 .6rem}
+.trace .bar i{width:.6rem;height:.6rem;border-radius:50%;background:var(--line)}
+.msg{border-radius:12px;padding:.6rem .9rem;margin:.4rem 0;max-width:92%;font-size:.88rem}
+.msg.user{background:var(--navy);color:#fff;margin-left:auto}
+.msg.agent{background:var(--pale);color:var(--ink)}
+.msg.agent b{color:var(--navy)}
+.think{font-size:.78rem;color:var(--soft);font-style:italic;margin:.5rem 0 .2rem}
+.call{border:1.5px solid var(--navy);border-radius:10px;margin:.35rem 0;overflow:hidden;font-family:"JetBrains Mono",ui-monospace,monospace;font-size:.66rem;background:var(--paper)}
+.call .hd{background:var(--navy);color:#fff;padding:.3rem .6rem;display:flex;justify-content:space-between;gap:.5rem}
+.call .bd{padding:.4rem .6rem;color:var(--ink);white-space:pre-wrap}
+.call .st{color:var(--peach)}
+.step{animation:in .35s ease-out}
+.legend{list-style:none;padding:0;margin:1rem 0 0}
+.legend li{display:flex;gap:.6rem;align-items:baseline;margin:.4rem 0;font-size:.88rem}
+.legend .k{flex:none;width:.9rem;height:.9rem;border-radius:3px;margin-top:.2rem}
+.talk .ans p{font-weight:400;margin:.5rem 0 0}
 
+/* 3 sort */
+.sort{max-width:44rem;margin-top:1.2rem}
+.sortcard{padding:1.4rem 1.5rem 1.2rem;min-height:11rem}
+.sortcard .n{font-family:"Space Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.2em;color:var(--soft);margin:0 0 .5rem}
+.sortcard .ex{font-size:1.3rem;font-weight:600;margin:0 0 1rem;max-width:24em}
+.def{display:grid;grid-template-columns:1fr 1.2fr;gap:2rem;align-items:center;margin-top:1.6rem}
+.eq{font-family:"Martian Mono",ui-monospace,monospace;font-size:1.25rem;font-weight:700;color:var(--navy);line-height:1.4;margin:0 0 .6rem}
+.eq span{box-shadow:inset 0 -.25em 0 var(--peach)}
+.fig{margin:0;padding:.8rem}
+.fig img{width:100%;height:auto;display:block;border-radius:8px}
 
-/* 7:00 agent */
-.run{display:grid;grid-template-columns:minmax(15rem,0.8fr) 1.2fr;gap:2.4rem;margin-top:1.2rem;align-items:start}
-.clock{font-size:5rem;font-weight:700;color:var(--navy);line-height:1;font-variant-numeric:tabular-nums;margin:.2rem 0 .3rem}
-.clock.ring{color:var(--ink);box-shadow:inset 0 -.18em 0 var(--peach);display:inline-block}
-.steps{list-style:none;margin:0;padding:0;counter-reset:s}
-.steps li{display:grid;grid-template-columns:2rem 1fr;gap:.6rem;padding:.45rem 0;color:var(--line)}
-.steps li .dot{width:1.6rem;height:1.6rem;border-radius:50%;border:2px solid var(--line);margin-top:.1rem}
-.steps li.lit{color:var(--ink)}
-.steps li.lit .dot{background:var(--navy);border-color:var(--navy)}
-.steps li b{display:block}
-.steps li.lit b{color:var(--navy)}
-.advice{margin-top:.6rem;padding:.2rem 0 .2rem 1.1rem;border-left:5px solid var(--navy);max-width:34em}
-.advice p{margin:.2rem 0}
+/* 4 why now */
+.tabs{display:inline-flex;gap:.2rem;margin:1rem 0 .9rem;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:.25rem}
+.tabs button{background:none;border:0;border-radius:999px;padding:.35rem .9rem;font-weight:600;font-size:.8rem;cursor:pointer;color:var(--ink)}
+.tabs button[aria-selected="true"]{background:var(--navy);color:#fff}
+.chartwrap{display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;align-items:start}
+.chartwrap .fig img{max-height:52vh;object-fit:contain}
+.callout{font-family:"Martian Mono",ui-monospace,monospace;font-size:1.15rem;font-weight:700;color:var(--navy);line-height:1.3;margin:.2rem 0 .7rem}
 
-/* sort */
-.sorter{display:grid;grid-template-columns:1.25fr 1fr;gap:2.4rem;margin-top:1rem;align-items:start}
-.card-now{min-height:8.5rem}
-.card-now .ex{font-size:1.35rem;font-weight:700;color:var(--ink);margin:.2rem 0 .9rem;max-width:24em}
-.card-now .n{color:var(--soft);font-size:.8rem}
-.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-.bin h3{font-size:.95rem;border-bottom:3px solid var(--navy);padding-bottom:.2rem}
-.bin ul{list-style:none;margin:.4rem 0;padding:0;font-size:.72rem}
-.bin li{padding:.2rem 0}
-.bin li .m{font-weight:700}
-.bin li .m.r{color:var(--right)} .bin li .m.w{color:var(--wrong)}
-.score{font-weight:700;color:var(--navy);margin:.8rem 0 .3rem}
-.makes{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin:1rem 0 .4rem}
-.makes div{border-top:5px solid var(--navy);padding-top:.5rem}
-.makes b{display:block;color:var(--navy);font-size:1.05rem}
-.makes span{font-size:.82rem}
-.makes em{font-style:normal;display:block;color:var(--soft);font-size:.72rem;margin-top:.3rem}
-.spectrum{margin:1.2rem 0 .6rem}
-.spec-line{display:grid;grid-template-columns:repeat(4,1fr);position:relative;margin-top:.5rem}
-.spec-line::before{content:"";position:absolute;left:0;right:0;top:.55rem;height:4px;background:var(--navy)}
-.spec-line div{position:relative;padding-top:1.5rem;font-size:.75rem;padding-right:.6rem}
-.spec-line div::before{content:"";position:absolute;top:.2rem;left:0;width:1rem;height:1rem;border-radius:50%;background:#fff;border:4px solid var(--navy)}
-.spec-line div b{display:block;color:var(--navy)}
-.spec-ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--soft);margin-top:.3rem}
+/* 5 wrong */
+.story{display:grid;grid-template-columns:1.1fr 1fr;gap:2.4rem;align-items:start;margin-top:1rem}
+.story .tell{font-size:1.1rem}
+.reveal{padding:1rem 1.2rem;border-left:5px solid var(--peach)}
+.reveal p{margin:.3rem 0}
 
-/* strip */
-.strip-wrap{margin-top:1.2rem}
-.strip{display:grid;grid-template-columns:repeat(8,1fr);gap:.4rem}
-.piece{border:2px solid var(--line);border-radius:6px;padding:.45rem .5rem;min-height:4.6rem;background:#fff;color:var(--soft);font-size:.7rem;line-height:1.25;position:relative}
-.piece .d{display:block;font-size:.62rem;margin-bottom:.15rem}
-.piece b{display:block;font-size:.78rem}
-.piece.built{background:var(--navy);border-color:var(--navy);color:#fff}
-.piece.now{box-shadow:0 0 0 4px var(--peach)}
-.piece.snap{animation:snap .42s cubic-bezier(.2,1.4,.4,1)}
-@keyframes snap{0%{transform:translateY(-14px) scale(.92)}100%{transform:none}}
+/* 6 map */
+.qs{list-style:none;padding:0;margin:1.2rem 0 1.4rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.qs li{padding:1rem 1.1rem}
+.qs .num{font-family:"Space Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.2em;color:var(--soft);display:block;margin-bottom:.35rem}
+.qs b{font-size:1.02rem;color:var(--ink);line-height:1.3;display:block}
+.days{display:grid;grid-template-columns:repeat(8,1fr);gap:.45rem}
+.day{background:var(--paper);border:1px solid var(--line);border-top:4px solid var(--line);border-radius:10px;padding:.5rem .5rem;text-align:left;cursor:pointer;min-height:4.4rem}
+.day .dn{display:block;font-family:"Space Mono",ui-monospace,monospace;font-size:.56rem;letter-spacing:.12em;color:var(--soft)}
+.day b{display:block;font-size:.72rem;color:var(--ink);line-height:1.2;margin-top:.15rem}
+.day.cap{border-top-color:var(--peach)}
+.day[aria-pressed="true"]{background:var(--navy);border-color:var(--navy)}
+.day[aria-pressed="true"] b,.day[aria-pressed="true"] .dn{color:#fff}
+.dayq{margin:.9rem 0 0;font-size:1.02rem;min-height:2.4rem}
+.dayq b{color:var(--navy)}
+.keyrow{display:flex;gap:1.2rem;font-size:.68rem;color:var(--soft);margin:.5rem 0 0}
+.keyrow i{display:inline-block;width:.9rem;height:4px;background:var(--line);vertical-align:.15rem;margin-right:.35rem}
+.keyrow i.c{background:var(--peach)}
 
-/* why now */
-.uses{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem;margin:1rem 0}
-.use h3{font-size:1.02rem}
-.use p{font-size:.82rem;margin:.2rem 0 .5rem}
-.use .more{font-size:.8rem;border-left:4px solid var(--peach);padding-left:.6rem;margin-top:.5rem}
-.use .more p{font-size:.8rem;margin:.2rem 0}
-.check{margin-top:1.2rem}
-.check .row{margin-top:.5rem}
-
-/* risks */
-.cases{display:grid;grid-template-columns:1fr 1fr;gap:2.4rem;margin-top:1rem}
-.case .when{color:var(--soft);font-size:.75rem;margin:0 0 .2rem}
-.case p{font-size:.92rem}
-.case .row{gap:.5rem}
-.case .opt{font-size:.85rem}
-.reveal{margin-top:.7rem;font-size:.88rem;border-left:4px solid var(--navy);padding-left:.8rem}
-.reveal p{font-size:.88rem;margin:.3rem 0}
-.risks{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem 1.6rem;margin:.8rem 0}
-.risk{display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;background:none;border:0;border-top:3px solid var(--navy);padding:.5rem 0 .2rem;text-align:left;cursor:pointer;font-size:.85rem}
-.risk b{display:block;color:var(--navy);font-size:.98rem}
-.risk .front{color:var(--soft)}
-.risk .back{display:none}
-.risk[aria-expanded="true"]{border-top-color:var(--peach)}
-.risk[aria-expanded="true"] .front{display:none}
-.risk[aria-expanded="true"] .back{display:block}
-.risk .back span{display:block;margin-top:.2rem;color:var(--soft);font-size:.78rem}
-.closer{font-size:1.15rem;font-weight:700;color:var(--navy);margin-top:1.2rem}
-
-/* map */
-.groups{display:grid;grid-template-columns:3fr 5fr;gap:.4rem;margin-top:1rem}
-.groups div{font-weight:700;color:var(--navy);font-size:.8rem;border-bottom:3px solid var(--navy);padding-bottom:.15rem}
-.map{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:auto auto;column-gap:.4rem;row-gap:0;margin-top:.5rem}
-.day{display:grid;grid-template-rows:subgrid;grid-row:span 2;gap:.35rem;background:none;border:0;padding:0;cursor:pointer;text-align:left}
-.day .dt{padding:.35rem .2rem .2rem;font-size:.68rem;color:var(--soft);line-height:1.2}
-.day .dt b{display:block;color:var(--ink);font-size:.8rem}
-.day .dt i{font-style:normal;display:block;color:var(--navy);font-weight:700;margin-top:.15rem}
-.day[aria-pressed="true"] .dt b{color:var(--navy);text-decoration:underline;text-decoration-color:var(--peach);text-decoration-thickness:4px;text-underline-offset:4px}
-.day .piece{width:100%;min-height:3.6rem}
-.detail{display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;margin-top:1.1rem;min-height:9rem}
-.detail h3{font-size:1.4rem}
-.detail .q{font-size:1rem;margin:.2rem 0 .5rem}
-.detail ul{margin:.2rem 0;padding-left:1.1rem;font-size:.88rem}
-.detail .addp{border-left:5px solid var(--navy);padding-left:.8rem}
-.detail .addp b{color:var(--navy);font-size:1.05rem;display:block}
-.map-actions{margin-top:1rem}
-
-/* build */
-.buildgrid{display:grid;grid-template-columns:1.1fr 1fr;gap:2.4rem;margin-top:1rem;align-items:start}
-.sentence{font-size:1.4rem;line-height:1.5;color:var(--ink);margin:.4rem 0 1rem;max-width:22em}
-.sentence .blank{color:var(--navy);font-weight:700;box-shadow:inset 0 -.22em 0 var(--peach)}
-.examples{display:flex;flex-wrap:wrap;gap:.5rem}
-.own{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-top:.8rem}
-.own label{font-size:.78rem;color:var(--soft);display:grid;gap:.15rem}
-.own input{border:2px solid var(--navy);border-radius:6px;padding:.35rem .6rem;font-size:.9rem;width:100%}
-.phone{border:2px solid var(--ink);border-radius:22px;padding:1.3rem 1.2rem 1rem;max-width:21rem;background:#fff;margin:0 auto}
-.phone .nm{font-size:1.2rem;font-weight:700;color:var(--ink);margin:0}
-.phone .for{font-size:.75rem;color:var(--soft);margin:0 0 .7rem}
-.phone .verdict{font-size:1.35rem;font-weight:700;color:var(--navy);line-height:1.15;margin:.2rem 0 .4rem}
-.phone .why{font-size:.85rem;margin:0 0 .7rem}
-.phone .meta{font-size:.68rem;color:var(--soft);margin:.15rem 0}
-.phone .foot{font-size:.62rem;color:var(--soft);margin-top:.8rem;padding-top:.5rem;border-top:2px solid var(--wash)}
-
-/* next up */
-.nextgrid{display:grid;grid-template-columns:1.2fr 1fr;gap:2.4rem;margin-top:1rem}
-.prompt-big{font-size:1.7rem;font-weight:700;color:var(--ink);margin:.3rem 0 .8rem}
-.prompt-big span{color:var(--navy);box-shadow:inset 0 -.2em 0 var(--peach);padding:0 .2em}
-.bars{margin-top:.8rem;display:grid;gap:.35rem;max-width:30rem}
-.bar{display:grid;grid-template-columns:5.5rem 1fr 3rem;gap:.6rem;align-items:center;font-size:.85rem}
-.bar .track{display:block;height:1.1rem}
-.bar .fill{display:block;border-radius:3px;height:100%;background:var(--navy);width:0;transition:width .7s ease-out}
-.bar.mine .fill{background:var(--peach)}
-.bar.mine b{color:var(--ink)}
-.bar .pc{text-align:right;font-variant-numeric:tabular-nums}
+/* 7 build */
+.flavors{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.2rem}
+.flavor{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:1rem 1.1rem;text-align:left;cursor:pointer}
+.flavor .num{display:block;font-family:"Space Mono",ui-monospace,monospace;font-size:.6rem;letter-spacing:.2em;color:var(--soft);margin-bottom:.3rem}
+.flavor b{display:block;color:var(--navy);font-size:1.1rem}
+.flavor span.s{font-size:.8rem;color:var(--soft)}
+.flavor[aria-pressed="true"]{background:var(--navy);border-color:var(--navy)}
+.flavor[aria-pressed="true"] b,.flavor[aria-pressed="true"] span{color:#fff}
+.example{display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:start;margin-top:1.4rem}
+.example .what{font-size:1.1rem;margin:.2rem 0 .5rem}
+.example .what b{color:var(--navy)}
+.phone{border:2px solid var(--ink);border-radius:24px;padding:1.2rem 1.2rem 1rem;max-width:20rem;margin:0 auto;background:var(--paper);box-shadow:var(--shadow)}
+.phone .nm{font-size:1rem;font-weight:700;margin:0}
+.phone .for{font-size:.7rem;color:var(--soft);margin:0 0 .6rem}
+.phone .verdict{font-family:"Martian Mono",ui-monospace,monospace;font-size:1.05rem;font-weight:700;color:var(--navy);line-height:1.2;margin:.2rem 0 .5rem}
+.phone .why{font-size:.82rem;margin:0 0 .5rem}
+.phone .meta{font-size:.64rem;color:var(--soft);margin:.1rem 0}
 
 @media (max-width: 900px){
-  .stops{display:none}
-  .top{justify-content:space-between}
-  main{padding:1.2rem 16px 6rem}
-  h2{font-size:1.65rem}
-  .welcome h1{font-size:2.5rem}
-  .own{grid-template-columns:1fr}
-  .hands,.two,.run,.sorter,.cases,.buildgrid,.nextgrid,.detail{grid-template-columns:1fr;gap:1.4rem}
-  .uses{grid-template-columns:1fr 1fr}
-  .makes{grid-template-columns:1fr 1fr}
-  .risks{grid-template-columns:1fr 1fr}
-  .clock{font-size:3.6rem}
-  .bottom{padding:.5rem 16px}
+  .pills{display:none}
+  main{padding:1.2rem 16px 7rem}
+  h2{font-size:1.5rem}
+  .hook h1{font-size:2.3rem}
+  .hook .sub{font-size:1.3rem}
+  .runwrap,.def,.chartwrap,.story,.example{grid-template-columns:1fr;gap:1.4rem}
+  .qs{grid-template-columns:1fr}
+  .days{grid-template-columns:repeat(4,1fr)}
+  .flavors{grid-template-columns:1fr}
+  .bottom .mid b{display:none}
 }
-@media (max-width: 600px){
-  .uses,.risks,.makes{grid-template-columns:1fr}
-  .bins{grid-template-columns:1fr}
-  .spec-line{grid-template-columns:1fr;gap:.2rem}
-  .spec-line::before{left:.4rem;right:auto;top:0;bottom:0;width:4px;height:auto}
-  .spec-line div{padding:0 0 .6rem 1.8rem}
-  .spec-line div::before{top:.15rem}
-  .spec-ends{display:none}
-  .strip{grid-template-columns:repeat(4,1fr)}
-  .groups{display:none}
-  .map{grid-template-columns:1fr;gap:.5rem}
-  .map{grid-template-rows:none}
-  .day{display:flex;flex-direction:row;align-items:stretch;grid-row:auto}
-  .day .dt{flex:1;min-height:0}
-  .day .piece{width:9.5rem;flex:none;min-height:3.6rem}
-  .day .grp{display:block}
-  .bottom .mid{display:none}
-  .small,.bin ul,.use p,.use .more p,.risk .back span,.phone .meta,.phone .foot,.sources,.makes span,.makes em,.spec-line div{font-size:.8rem}
-  .sources{font-size:.72rem}
-}
-.day .grp{display:none;font-size:.62rem;color:var(--soft)}
-@media (prefers-reduced-motion: reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
-}
+@media (prefers-reduced-motion: reduce){ *,*::before,*::after{animation:none!important;transition:none!important} }
+
+/* charts */
+.chart{padding:1.2rem 1.4rem 1rem;max-width:52rem}
+.ctitle{font-weight:600;margin:0 0 1rem;font-size:.95rem}
+.bars{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;height:12rem;align-items:end;position:relative}
+.hline{position:absolute;left:0;right:0;border-top:2px dashed var(--peach);pointer-events:none}
+.hline em{position:absolute;left:0;top:-1.25rem;font-style:normal;font-size:.7rem;font-weight:700;color:var(--ink);background:var(--paper);padding:0 .3rem}
+.qpick{margin-top:.2rem}
+.qpick .opt{width:100%;margin-bottom:.5rem;font-size:.95rem}
+.qpick .opt[aria-pressed="true"]{background:var(--navy);color:#fff}
+.bcol{display:flex;flex-direction:column;align-items:center;height:100%}
+.bval{font-family:"Space Mono",ui-monospace,monospace;font-size:.72rem;font-weight:700;color:var(--navy);margin-bottom:.3rem}
+.btrack{flex:1;width:70%;display:flex;align-items:flex-end}
+.bfill{display:block;width:100%;height:0;background:var(--navy);border-radius:6px 6px 0 0;transition:height .7s cubic-bezier(.2,.8,.2,1)}
+.bcol:last-child .bfill{background:var(--peach)}
+.blab{font-size:.66rem;color:var(--soft);text-align:center;margin-top:.4rem;line-height:1.3;min-height:2.2rem}
+.blab b{color:var(--ink);font-weight:600}
+.cnote{font-weight:600;color:var(--navy);margin:1rem 0 .2rem}
+/* going wrong */
+.ways{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-top:1.2rem}
+.way{padding:.8rem 1rem;border-top:4px solid var(--peach)}
+.way b{display:block;color:var(--navy)}
+.way span{font-size:.8rem;color:var(--soft)}
+.ex2{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;margin-top:1.4rem;align-items:start}
+.story2{padding:1.1rem 1.2rem}
+.ex3{grid-template-columns:1fr 1fr 1fr;margin-top:.6rem}
+.story2 p:not(.small):not(.credit){font-size:.92rem}
+.story2 h3{margin:.2rem 0 .4rem}
+.fig figcaption{font-size:.82rem;margin-top:.6rem}
+/* build */
+.flavor{cursor:default}
+.ask-end{margin-top:2rem}
+.ask-end .lbl{font-size:.72rem;font-weight:700;color:var(--navy);margin:0}
+.endq{font-family:"Martian Mono",ui-monospace,monospace;font-weight:700;font-size:1.7rem;color:var(--navy);margin:.2rem 0 .3rem}
+@media (max-width: 900px){ .ways{grid-template-columns:1fr 1fr} .ex2,.ex3{grid-template-columns:1fr} .blab{min-height:3.2rem} .bars{height:12rem;gap:.4rem} .endq{font-size:1.3rem} }
+
+/* parts */
+.parts{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-top:1.4rem}
+.part{padding:.9rem 1rem;min-height:7.5rem;transition:opacity .4s ease}
+.part:not(.in){background:transparent;border-style:dashed;box-shadow:none}
+.part:not(.in) b,.part:not(.in) span:last-child{visibility:hidden}
+.part.in{opacity:1;border-top:4px solid var(--navy)}
+.part .pn{display:block;font-family:"Space Mono",ui-monospace,monospace;font-size:.6rem;letter-spacing:.2em;color:var(--soft)}
+.part b{display:block;color:var(--navy);font-size:1.05rem;margin:.2rem 0}
+.part span:last-child{font-size:.8rem;color:var(--soft)}
+@media (max-width: 900px){ .parts{grid-template-columns:1fr 1fr} }
+
+/* eras */
+.eras{list-style:none;padding:0;margin:1.4rem 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:.7rem}
+.era{padding:.9rem .9rem 1rem;transition:opacity .4s ease}
+.era:not(.in){background:transparent;border-style:dashed;box-shadow:none}
+.era:not(.in) > *{visibility:hidden}
+.era.in{opacity:1;border-top:4px solid var(--navy)}
+.era.now.in{border-top-color:var(--peach)}
+.eimg svg{width:100%;max-width:7rem;height:auto;display:block;margin-bottom:.5rem}
+.eyrs{font-family:"Space Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.12em;color:var(--soft);margin:0}
+.era h3{font-size:1rem;margin:.1rem 0 .4rem}
+.ehow{font-size:.8rem;font-weight:600;margin:0 0 .4rem}
+.emade{font-size:.72rem;color:var(--soft);margin:0 0 .5rem;padding-left:.5rem;border-left:3px solid var(--peach)}
+.eex{list-style:none;padding:0;margin:0;font-size:.72rem;color:var(--ink)}
+.eex li{margin:.3rem 0;line-height:1.35}
+.ey{display:block;font-family:"Space Mono",ui-monospace,monospace;font-size:.6rem;font-weight:700;color:var(--navy)}
+@media (max-width: 900px){ .eras{grid-template-columns:1fr 1fr} }
 </style>
 </head>
 <body>
+<div class="prog" id="prog" aria-hidden="true"></div>
 <header class="top">
-  <button class="brand" type="button" data-go="0">Agent Builder's Map</button>
-  <nav class="stops" aria-label="Stops" id="stopnav"></nav>
-  <div class="count" aria-live="polite"><span id="count">1 / 9</span></div>
+  <nav class="pills" id="pills" aria-label="Pages"></nav>
 </header>
 
 <main id="main">
 
-<!-- 1 WELCOME -->
-<section class="stop" data-name="Welcome" aria-labelledby="h1">
-  <div class="welcome">
-    <h1 id="h1">Your Agent Builder's Map</h1>
-    <p class="lead">In 8 days you'll build an AI agent that wakes up on its own, checks live data, makes a choice and shows its answer on a page your family can open.</p>
-    <p class="who">Agentic AI for Impact, Day 1. About 15 minutes.</p>
-    <div class="row">
-      <button class="btn" type="button" data-go="1">Start</button>
-      <button class="textlink" type="button" data-go="6">Skip to the map</button>
-    </div>
+<!-- 1 HOOK -->
+<section class="stop" data-name="Start" aria-labelledby="t1">
+  <div class="hook">
+    <p class="kicker">D a y &nbsp;1 &nbsp;/ &nbsp;8</p>
+    <h1 id="t1">Agentic AI for Impact</h1>
+    <p class="big">In 8 days, you'll build an <b>AI agent that works on a real problem</b>, for a real person or a cause you care about.</p>
+    <div class="row"><button class="btn" type="button" data-go="1">Get started &rarr;</button></div>
+    <p class="meta">About 12 minutes, together as a class.</p>
   </div>
 </section>
 
-<!-- 2 ASK THE ROOM -->
-<section class="stop" data-name="You and AI" aria-labelledby="h2a">
-  <h2 id="h2a">You and AI, right now</h2>
-  <p class="lead">Hands up if this is you. Your instructor counts.</p>
-  <div class="hands">
-    <div class="hand">
-      <p>You used an AI chatbot this week</p>
-      <div class="tally"><button type="button" data-t="-1" aria-label="One less">&minus;</button><output aria-live="polite">0</output><button type="button" data-t="1" aria-label="One more">+</button></div>
-    </div>
-    <div class="hand">
-      <p>An AI told you something wrong, and it sounded sure</p>
-      <div class="tally"><button type="button" data-t="-1" aria-label="One less">&minus;</button><output aria-live="polite">0</output><button type="button" data-t="1" aria-label="One more">+</button></div>
-    </div>
-    <div class="hand">
-      <p>Something did a job for you without being asked each time</p>
-      <div class="tally"><button type="button" data-t="-1" aria-label="One less">&minus;</button><output aria-live="polite">0</output><button type="button" data-t="1" aria-label="One more">+</button></div>
-    </div>
+<!-- 1a HOW WE GOT HERE -->
+<section class="stop" data-name="How we got here" aria-labelledby="t1a">
+  <h2 id="t1a">How we got here</h2>
+  <p class="lead">Five eras of AI, and what made each one possible.</p>
+  <ol class="eras" id="eras">
+    <li class="era card">
+      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><rect x="4" y="22" width="24" height="16" rx="3" fill="none" stroke="#2E3066" stroke-width="2.5"/><text x="16" y="34" font-size="9" text-anchor="middle" fill="#2E3066" font-family="monospace" font-weight="700">IF</text><path d="M28 30h10" stroke="#2E3066" stroke-width="2.5"/><path d="M48 18l10 12-10 12-10-12z" fill="none" stroke="#2E3066" stroke-width="2.5"/><path d="M58 30l8-14h18M58 30l8 14h18" fill="none" stroke="#2E3066" stroke-width="2.5"/><circle cx="84" cy="16" r="3" fill="#F6B48A"/><circle cx="84" cy="44" r="3" fill="#2E3066"/></svg></div>
+      <p class="eyrs">1950s to 1990s</p>
+      <h3>Symbolic AI</h3>
+      <p class="ehow">People write the rules. The computer follows them.</p>
+      <p class="emade">Made possible by: the first computers.</p>
+      <ul class="eex"><li><span class="ey">1956</span>The name "artificial intelligence" is coined.</li><li><span class="ey">1997</span>Deep Blue beats the chess champion by searching millions of moves.</li></ul>
+    </li>
+    <li class="era card">
+      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M8 52h76M8 52V6" stroke="#2E3066" stroke-width="2.5"/><circle cx="18" cy="44" r="3" fill="#2E3066"/><circle cx="26" cy="40" r="3" fill="#2E3066"/><circle cx="32" cy="42" r="3" fill="#2E3066"/><circle cx="40" cy="33" r="3" fill="#2E3066"/><circle cx="46" cy="35" r="3" fill="#2E3066"/><circle cx="54" cy="26" r="3" fill="#2E3066"/><circle cx="60" cy="28" r="3" fill="#2E3066"/><circle cx="68" cy="18" r="3" fill="#2E3066"/><circle cx="74" cy="20" r="3" fill="#2E3066"/><path d="M14 48L80 12" stroke="#F6B48A" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <p class="eyrs">1990s to 2010s</p>
+      <h3>Machine learning</h3>
+      <p class="ehow">The computer learns patterns from examples.</p>
+      <p class="emade">Made possible by: lots of digital data, thanks to the internet.</p>
+      <ul class="eex"><li><span class="ey">2000s</span>Spam filters learn from millions of emails.</li></ul>
+    </li>
+    <li class="era card">
+      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M12 14L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 46" stroke="#B6B9E2" stroke-width="1.2"/><circle cx="12" cy="14" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="12" cy="30" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="12" cy="46" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="10" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="23" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="37" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="50" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="14" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="30" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="46" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><rect x="78" y="22" width="10" height="16" rx="2" fill="#F6B48A"/></svg></div>
+      <p class="eyrs">2012 on</p>
+      <h3>Deep learning</h3>
+      <p class="ehow">Big neural networks learn from huge amounts of data.</p>
+      <p class="emade">Made possible by: GPUs, chips first built for video games.</p>
+      <ul class="eex"><li><span class="ey">2012</span>A network learns to recognize photos, not rules.</li><li><span class="ey">2016</span>AlphaGo masters Go by trial and reward.</li></ul>
+    </li>
+    <li class="era card">
+      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M8 8h56a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6H30l-12 10v-10h-10a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6z" fill="none" stroke="#2E3066" stroke-width="2.5"/><path d="M16 19h40M16 26h32M16 33h22" stroke="#2E3066" stroke-width="2.5" stroke-linecap="round"/><path d="M78 10l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#F6B48A"/></svg></div>
+      <p class="eyrs">2017 on</p>
+      <h3>Generative AI</h3>
+      <p class="ehow">Models create text, images and code.</p>
+      <p class="emade">Made possible by: Transformers, and text from across the internet.</p>
+      <ul class="eex"><li><span class="ey">2017</span>Transformers: the T in GPT.</li><li><span class="ey">2022</span>ChatGPT: anyone can chat with a model.</li></ul>
+    </li>
+    <li class="era card now">
+      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><circle cx="45" cy="30" r="20" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-dasharray="20 6"/><path d="M60 13l5 5-7 2" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-linejoin="round"/><circle cx="45" cy="10" r="5" fill="#F6B48A"/><circle cx="63" cy="40" r="5" fill="#2E3066"/><circle cx="27" cy="40" r="5" fill="#2E3066"/></svg></div>
+      <p class="eyrs">Now</p>
+      <h3>Agentic AI</h3>
+      <p class="ehow">AI uses tools, makes choices and acts.</p>
+      <p class="emade">Made possible by: models that can call tools and finish longer tasks.</p>
+      <ul class="eex"><li><span class="ey">Now</span>Coding and research agents. And the agent you'll build.</li></ul>
+    </li>
+  </ol>
+  <div class="row" style="margin-top:1rem"><button class="btn" type="button" id="erabtn">Show the first era</button></div>
+</section>
+
+<!-- 1b WHAT IS AN AGENT -->
+<section class="stop" data-name="What's an agent" aria-labelledby="t1b">
+  <h2 id="t1b">What is an AI agent?</h2>
+  <div class="talk card" style="margin-top:.6rem">
+    <p class="lbl">Hands up, 1 min</p>
+    <p>You've used chatbots like ChatGPT. What do you think makes something an AI agent?</p>
   </div>
-  <div class="two">
+  <div class="parts" id="parts">
+    <div class="card part"><span class="pn">01</span><b>A model</b><span>Reads, thinks and writes. The same kind of AI as ChatGPT.</span></div>
+    <div class="card part"><span class="pn">02</span><b>Tools</b><span>Looks up live data or does things, instead of guessing.</span></div>
+    <div class="card part"><span class="pn">03</span><b>A choice</b><span>Decides its next step from what it finds.</span></div>
+    <div class="card part"><span class="pn">04</span><b>Memory</b><span>Keeps notes and reads them next time.</span></div>
+    <div class="card part"><span class="pn">05</span><b>A trigger</b><span>A message or a clock starts it, even while you sleep.</span></div>
+  </div>
+  <div class="row" style="margin-top:1rem"><button class="btn" type="button" id="partbtn">Show the first part</button></div>
+  <div class="hide" id="parteq" style="margin-top:1.2rem"><p class="eq">An AI agent is AI that can <span>take action on its own</span>.</p><p>It needs a model, tools and a choice. Add memory and a trigger, and it keeps working even when you're not there.</p></div>
+</section>
+
+<!-- 2 WATCH AN AGENT WORK -->
+<section class="stop" data-name="Watch an agent" aria-labelledby="t2">
+  <h2 id="t2">Watch an agent work</h2>
+  <p class="lead">Pick a question. Watch what the agent does before it answers.</p>
+  <div class="runwrap">
     <div>
-      <h3>Turn to a partner</h3>
-      <p><b>1.</b> How do you use AI now? Homework, music, games, messages?</p>
-      <p><b>2.</b> What do you wish it could just do for you, without you asking?</p>
-      <p class="small">Two minutes. Then shout out the best wish you heard. Keep it in mind for later.</p>
-    </div>
-    <div>
-      <h3>Today's goals</h3>
-      <ul class="goals" id="goals">
-        <li><button type="button" aria-pressed="false"><span class="box" aria-hidden="true"></span><span class="gt">Explain how a language model predicts its next word and why confident answers can be wrong</span></button></li>
-        <li><button type="button" aria-pressed="false"><span class="box" aria-hidden="true"></span><span class="gt">Identify fabricated AI claims and verify them against reliable sources</span></button></li>
-        <li><button type="button" aria-pressed="false"><span class="box" aria-hidden="true"></span><span class="gt">Write precise instructions and test them against five questions</span></button></li>
-        <li><button type="button" aria-pressed="false"><span class="box" aria-hidden="true"></span><span class="gt">Build a Make agent that plays the Trust Game using a defined strategy</span></button></li>
+      <div class="qpick" id="qpick">
+        <button class="opt" type="button" data-run="0">Did our car-free day clean the air?</button>
+        <button class="opt" type="button" data-run="1">Would solar panels pay off at our school?</button>
+        <button class="opt" type="button" data-run="2">Which food bank needs volunteers this Saturday?</button>
+      </div>
+      <ul class="legend">
+        <li><span class="k" style="background:var(--navy)"></span><span><b>Tool call:</b> it looks up real data</span></li>
+        <li><span class="k" style="background:var(--wash);border:2px solid var(--line)"></span><span><b>Answer:</b> what it tells the person</span></li>
       </ul>
-      <p class="small" id="goalcount" aria-live="polite">0 of 4 done. Click one when you've covered it.</p>
-    </div>
-  </div>
-</section>
-
-<!-- 3 THE 7:00 AGENT -->
-<section class="stop" data-name="7:00 agent" aria-labelledby="h3a">
-  <h2 id="h3a">This ran at 7:00 today. Nobody touched it</h2>
-  <p class="lead">Your instructor will open the real run in Make. Here's what it did, step by step.</p>
-  <div class="run">
-    <div>
-      <div class="clock" id="clock" aria-live="polite">6:59</div>
-      <p class="small">Abu Dhabi time</p>
-      <div class="row" style="margin-top:.8rem">
-        <button class="btn" type="button" id="wake">Wake it up</button>
-        <button class="textlink hide" type="button" id="rewake">Run it again</button>
-      </div>
-    </div>
-    <div>
-      <ol class="steps" id="steps">
-        <li><span class="dot" aria-hidden="true"></span><span><b>The clock started it</b>Its trigger is a schedule: every day at 7:00.</span></li>
-        <li><span class="dot" aria-hidden="true"></span><span><b>It used a tool</b>It looked up the live weather in Abu Dhabi.</span></li>
-        <li><span class="dot" aria-hidden="true"></span><span><b>It decided</b>Its instructions say what to look for and how to judge it.</span></li>
-        <li><span class="dot" aria-hidden="true"></span><span><b>It wrote advice</b>In plain words, and every step is saved in its History.</span></li>
-      </ol>
-      <div class="advice hide" id="advice">
-        <p class="small">Something like this. Your instructor shows today's real one.</p>
-        <p><b>Good morning! Warm and sunny later.</b> Light clothes, and take water if you have PE outside.</p>
-      </div>
-    </div>
-  </div>
-  <div class="check hide" id="q700">
-    <p class="ask"><b>Shout it out:</b> what made that different from asking ChatGPT? Pick every one that's true.</p>
-    <div class="row" id="q700opts">
-      <button class="opt" type="button" data-ok="1" data-why="Right. No one typed anything. A clock started it.">Nobody typed a prompt</button>
-      <button class="opt" type="button" data-ok="1" data-why="Right. It checked real weather instead of guessing from what it read in training.">It looked up live data</button>
-      <button class="opt" type="button" data-ok="1" data-why="Right. It runs on a schedule, even while you sleep.">It ran at a set time</button>
-      <button class="opt" type="button" data-ok="0" data-why="Not this one. It can use the same kind of model as ChatGPT. The difference is what's built around the model.">It's a smarter AI</button>
-    </div>
-    <p class="fb" id="q700fb" aria-live="polite"></p>
-  </div>
-</section>
-
-<!-- 4 CHATBOT OR AGENT -->
-<section class="stop" data-name="Chatbot or agent" aria-labelledby="h4a">
-  <h2 id="h4a">Chatbot or agent?</h2>
-  <p class="lead">Sort each one. Vote with hands first, then click.</p>
-  <div class="sorter">
-    <div>
-      <div class="card-now">
-        <p class="ex" id="sortex"></p>
-        <div class="row" id="sortbtns">
-          <button class="opt" type="button" data-bin="chatbot">Chatbot</button>
-          <button class="opt" type="button" data-bin="agent">Agent</button>
-          <button class="opt" type="button" data-bin="neither">Neither</button>
+      <div class="talk card hide" id="talk2">
+        <p class="lbl">Discuss, 2 min</p>
+        <div>
+        <p>Turn to a partner: what did it do that a chatbot couldn't?</p>
+        <button class="btn ghost" type="button" id="ans2">Show the answer &rarr;</button>
+        <div class="ans hide" id="ans2box">
+          <p style="margin-top:.6rem">1. It <b>looked up real data</b> instead of guessing.</p>
+          <p>2. It <b>chose its next step</b> on its own.</p>
+          <p>3. It <b>said what it can't be sure of</b>.</p>
         </div>
-        <p class="fb" id="sortfb" aria-live="polite"></p>
-        <div class="row" style="margin-top:.7rem">
-          <button class="btn hide" type="button" id="sortnext">Next one</button>
         </div>
       </div>
-      <p class="score" id="sortscore" aria-live="polite"><span id="sortn">1 of 8</span>. <span id="sortsc">0 sorted</span></p>
-      <div class="row">
-        <button class="btn" type="button" id="whatmakes">What makes an agent?</button>
-        <button class="textlink" type="button" id="sortreset">Start the sort again</button>
-      </div>
     </div>
-    <div class="bins">
-      <div class="bin"><h3>Chatbot</h3><ul id="bin-chatbot"></ul></div>
-      <div class="bin"><h3>Agent</h3><ul id="bin-agent"></ul></div>
-      <div class="bin"><h3>Neither</h3><ul id="bin-neither"></ul></div>
+    <div class="trace card" id="trace" aria-live="polite">
+      <p class="small" id="tracehint">Pick a question to start.</p>
     </div>
   </div>
-
-  <div class="hide" id="makes">
-    <h3 style="margin-top:1.6rem;font-size:1.4rem">An agent is a model with more around it</h3>
-    <div class="makes">
-      <div><b>It uses tools</b><span>It looks things up or does things, instead of only guessing.</span><em>You add tools on Day 2</em></div>
-      <div><b>It remembers</b><span>It keeps notes and reads them next time.</span><em>Day 3</em></div>
-      <div><b>It acts on its own</b><span>A trigger starts it: a message or a clock.</span><em>Day 3</em></div>
-      <div><b>It works toward a goal</b><span>It makes a real choice for someone.</span><em>Day 4</em></div>
-    </div>
-    <div class="spectrum">
-      <p style="margin:0"><b>It's a spectrum.</b> The real question is how much it decides.</p>
-      <div class="spec-line">
-        <div><b>Rain alert</b>Same rule, same message</div>
-        <div><b>Chatbot</b>Answers when you ask</div>
-        <div><b>The 7:00 agent</b>Starts itself, uses a tool, decides</div>
-        <div><b>ChatGPT agent</b>Plans many steps, asks before it pays</div>
-      </div>
-      <div class="spec-ends"><span>Decides less</span><span>Decides more</span></div>
-    </div>
-    <div class="strip-wrap">
-      <p style="margin-bottom:.3rem"><b>You'll build one piece a day.</b> Today is piece one.</p>
-      <div class="strip" id="strip4" aria-label="Your agent, piece by piece"></div>
-    </div>
-  </div>
+  <p class="small" style="margin-top:.6rem">An example run. The numbers are made up for this demo.</p>
 </section>
 
-<!-- 5 WHY NOW -->
-<section class="stop" data-name="Why now" aria-labelledby="h5a">
-  <h2 id="h5a">Agents are already doing real work</h2>
-  <p class="lead">Four real ones. Guess what each does on its own, then click to check.</p>
-  <div class="uses">
-    <div class="use">
-      <h3>Customer help</h3>
-      <p>Klarna, a payments company, put an AI assistant on its customer chat in 2024.</p>
-      <button class="opt" type="button" aria-expanded="false" data-more>What did it do?</button>
-      <div class="more hide"><p>It answered most customer chats on its own. In 2025 Klarna said quality had dropped and promised people can always reach a human.</p></div>
-    </div>
-    <div class="use">
-      <h3>Coding</h3>
-      <p>GitHub's Copilot coding agent, 2025. You hand it a bug or a small task.</p>
-      <button class="opt" type="button" aria-expanded="false" data-more>What did it do?</button>
-      <div class="more hide"><p>It writes the code, tests it and sends the change back. A person reviews it before it goes live.</p></div>
-    </div>
-    <div class="use">
-      <h3>Research</h3>
-      <p>OpenAI's deep research, 2025. You ask a big question.</p>
-      <button class="opt" type="button" aria-expanded="false" data-more>What did it do?</button>
-      <div class="more hide"><p>It searches many websites, reads them and writes a report with links to its sources. You still check those sources.</p></div>
-    </div>
-    <div class="use">
-      <h3>Errands</h3>
-      <p>ChatGPT agent, 2025. You ask it to plan and book something.</p>
-      <button class="opt" type="button" aria-expanded="false" data-more>What did it do?</button>
-      <div class="more hide"><p>It uses a browser to find options and fill in forms. It asks your permission before anything big, like paying.</p></div>
-    </div>
-  </div>
-  <div class="check">
-    <p class="ask"><b>Quick check:</b> what do all four have in common?</p>
-    <div class="row" id="qcommon">
-      <button class="opt" type="button" data-ok="0" data-why="Not quite. Klarna's assistant got worse at hard questions, and every one of these can be wrong.">They never make mistakes</button>
-      <button class="opt" type="button" data-ok="1" data-why="Yes. Each one uses tools and takes steps toward a goal. And a person still checks the work that matters.">They use tools and take steps toward a goal</button>
-      <button class="opt" type="button" data-ok="0" data-why="Not quite. Each one has a person in the loop: a reviewer, a permission step, or a human to talk to.">No human is involved at all</button>
-    </div>
-    <p class="fb" id="qcommonfb" aria-live="polite"></p>
-  </div>
-  <p class="ask"><b>Turn to a partner:</b> what's one job in your life you'd hand off to an agent? What would you never hand off?</p>
-  <p class="sources">Sources:
-    <a href="https://gizmodo.com/klarna-hiring-back-human-help-after-going-all-in-on-ai-2000600767" target="_blank" rel="noopener">Gizmodo on Klarna, May 2025</a>,
-    <a href="https://github.blog/changelog/2025-05-19-github-copilot-coding-agent-in-public-preview/" target="_blank" rel="noopener">GitHub, May 2025</a>,
-    <a href="https://openai.com/index/introducing-deep-research/" target="_blank" rel="noopener">OpenAI deep research, Feb 2025</a>,
-    <a href="https://openai.com/index/introducing-chatgpt-agent/" target="_blank" rel="noopener">OpenAI ChatGPT agent, July 2025</a>
-  </p>
-</section>
-
-<!-- 6 WHEN AGENTS GO WRONG -->
-<section class="stop" data-name="Going wrong" aria-labelledby="h6a">
-  <h2 id="h6a">When agents go wrong</h2>
-  <p class="lead">Two true stories. Predict first, then reveal.</p>
-  <div class="cases">
-    <div class="case" id="caseA">
-      <h3>The 9-second mistake</h3>
-      <p>April 2026. An AI coding agent at a small software company was fixing a small problem in a test system. It had a key that also opened the company's real, live system. What happened?</p>
-      <div class="row">
-        <button class="opt" type="button" data-ok="0">It asked first, then fixed it</button>
-        <button class="opt" type="button" data-ok="0">It fixed the problem</button>
-        <button class="opt" type="button" data-ok="1">It deleted the live database</button>
+<!-- 3 CHATBOT OR AGENT -->
+<section class="stop" data-name="Chatbot or agent" aria-labelledby="t3">
+  <h2 id="t3">Chatbot or agent?</h2>
+  <p class="lead">Vote with your hands first. Then click.</p>
+  <div class="sort" id="sort">
+    <div class="sortcard card">
+      <p class="n" id="sortn">1 of 4</p>
+      <p class="ex" id="sortex"></p>
+      <div class="row" id="sortbtns">
+        <button class="opt" type="button" data-bin="chatbot">Chatbot</button>
+        <button class="opt" type="button" data-bin="agent">Agent</button>
       </div>
-      <div class="reveal hide">
-        <p><b>It deleted the company's live database and its backups, in 9 seconds.</b> Nobody asked it to. It guessed instead of checking.</p>
-        <p>The company rebuilt months of records by hand from payments and emails.</p>
-        <p><b>Why it could happen:</b> the agent had more power than its job needed, the backups sat in the same place, and nothing asked a human first.</p>
-      </div>
+      <p class="fb" id="sortfb" aria-live="polite"></p>
     </div>
-    <div class="case" id="caseB">
-      <h3>The chatbot's promise</h3>
-      <p>Canada, 2022. Air Canada's website chatbot told a grieving customer he could get a discount after his flight. That was wrong. He asked for the money and took it to a tribunal. Who had to pay?</p>
-      <div class="row">
-        <button class="opt" type="button" data-ok="0">Nobody</button>
-        <button class="opt" type="button" data-ok="0">The chatbot's maker</button>
-        <button class="opt" type="button" data-ok="1">Air Canada</button>
-      </div>
-      <div class="reveal hide">
-        <p><b>Air Canada.</b> In February 2024 the tribunal ruled against the airline. It had argued the chatbot was responsible for its own actions. The tribunal called that "a remarkable submission."</p>
-        <p>It ruled the company is responsible for everything on its website, and ordered it to pay the customer about 800 Canadian dollars.</p>
-      </div>
-    </div>
+    <div class="row" style="margin-top:.8rem"><button class="btn hide" type="button" id="sortnext">Next</button></div>
   </div>
-
-  <h3 style="margin-top:1.6rem;font-size:1.3rem">Six ways agents go wrong. Click each one</h3>
-  <div class="risks" id="risks">
-    <button class="risk" type="button" aria-expanded="false"><b>Wrong info</b><span class="front">It acts on something false.</span><span class="back">It sounds sure and acts anyway.<span>You hunt this today and Check the numbers on Day 4.</span></span></button>
-    <button class="risk" type="button" aria-expanded="false"><b>Tricked by what it reads</b><span class="front">Hidden orders in a page or message.</span><span class="back">A web page says "ignore your rules" and it obeys. This is called prompt injection.<span>Day 6: Guard the Secret.</span></span></button>
-    <button class="risk" type="button" aria-expanded="false"><b>Privacy</b><span class="front">What it can see and send.</span><span class="back">Anything you give it can end up somewhere else.<span>From today: no passwords or anyone's private info.</span></span></button>
-    <button class="risk" type="button" aria-expanded="false"><b>Cost runs away</b><span class="front">Every run costs something.</span><span class="back">An agent set to run every 15 minutes would empty your 1,000 credits in under 3 days.<span>Day 5: your Cost Card.</span></span></button>
-    <button class="risk" type="button" aria-expanded="false"><b>Trusting it too much</b><span class="front">People stop checking.</span><span class="back">It's right ten times, so nobody checks the eleventh.<span>Day 5: a person approves.</span></span></button>
-    <button class="risk" type="button" aria-expanded="false"><b>Too much power</b><span class="front">It can do more than its job needs.</span><span class="back">Like the 9-second mistake. Read is safer than write.<span>Day 2: every tool gets a Tool Card.</span></span></button>
-  </div>
-
-  <div class="check">
-    <p class="ask"><b>Hands up, then discuss:</b> an agent does something harmful. Who is responsible?</p>
-    <div class="row" id="qresp">
-      <button class="opt" type="button" data-ok="0" data-why="The agent isn't a person. It can't be punished or pay anyone back. Air Canada tried this argument and lost.">The agent</button>
-      <button class="opt" type="button" data-ok="1" data-why="Partly, yes. The builder chose what it could do.">The builder</button>
-      <button class="opt" type="button" data-ok="1" data-why="Partly, yes. The company that runs it answers for it, like Air Canada.">The company</button>
-      <button class="opt" type="button" data-ok="1" data-why="Partly, yes. Whoever approved the action shares it.">The person who approved it</button>
-    </div>
-    <p class="fb" id="qrespfb" aria-live="polite"></p>
-  </div>
-  <p class="closer">On Day 6 you'll try to break your own agent first.</p>
-  <p class="sources">Sources:
-    <a href="https://www.techspot.com/news/112207-ai-coding-agent-running-claude-wiped-startup-database.html" target="_blank" rel="noopener">TechSpot on PocketOS, April 2026</a>,
-    <a href="https://decrypt.co/365897/ai-agent-deletes-startup-database-9-seconds-founder-says" target="_blank" rel="noopener">Decrypt</a>,
-    <a href="https://amp.cbc.ca/lite/story/1.7116416" target="_blank" rel="noopener">CBC on Moffatt v. Air Canada, Feb 2024</a>,
-    <a href="https://www.cbsnews.com/news/aircanada-chatbot-discount-customer/" target="_blank" rel="noopener">CBS News</a>
-  </p>
-</section>
-
-<!-- 7 MAP -->
-<section class="stop" data-name="Map" id="map" aria-labelledby="h7a">
-  <h2 id="h7a">Your Agent Builder's Map</h2>
-  <div class="row" style="justify-content:space-between">
-    <p class="lead" style="margin:0">Eight days, one agent. Click a day to see what you add.</p>
-    <div class="row"><button class="btn" type="button" id="buildall">Build the whole agent</button>
-    <button class="textlink" type="button" id="clearall">Back to Day 1</button></div>
-  </div>
-  <div class="groups" aria-hidden="true"><div>Foundations</div><div>Capstone</div></div>
-  <div class="map" id="mapdays"></div>
-  <div class="detail" id="detail" aria-live="polite"></div>
-</section>
-
-<!-- 8 WHAT YOU'LL BUILD -->
-<section class="stop" data-name="Your build" aria-labelledby="h8a">
-  <h2 id="h8a">What you'll build</h2>
-  <p class="lead">One agent that makes one real choice for someone, using live data, and shows its latest answer on a page.</p>
-  <div class="buildgrid">
+  <div class="def hide" id="def">
     <div>
-      <p class="sentence" id="sentence"></p>
-      <p class="small" style="margin-bottom:.4rem">Try an example:</p>
-      <div class="examples" id="examples"></div>
-      <div class="own hide" id="own">
-        <label>My agent helps <input id="o1" maxlength="40" placeholder="my little brother"></label>
-        <label>decide <input id="o2" maxlength="60" placeholder="whether to wear a jacket"></label>
-        <label>by checking <input id="o3" maxlength="50" placeholder="the weather at 7:00"></label>
-      </div>
-      <p class="ask"><b>Turn to a partner:</b> who in your life could use an agent? What would it decide for them?</p>
+      <p class="eq">An agent works in a loop</p>
+      <p>It acts, checks the result and acts again, until the job is done. You'll build one, one piece a day.</p>
     </div>
-    <div>
-      <div class="phone" aria-label="Example agent page">
-        <p class="nm" id="pnm"></p>
-        <p class="for" id="pfor"></p>
-        <p class="verdict pop" id="pverdict"></p>
-        <p class="why" id="pwhy"></p>
-        <p class="meta" id="pchecked"></p>
-        <p class="meta" id="plast">Last run: Mon 21 Dec, 07:00, Abu Dhabi time</p>
-        <p class="foot">An AI agent wrote this, so check before you act.</p>
-      </div>
-      <p class="small" style="text-align:center;margin-top:.5rem">Your family opens this link. You demo it on Day 8.</p>
+    <figure class="fig card">
+      <img src="https://www-cdn.anthropic.com/images/4zrzovbb/website/58d9f10c985c4eb5d53798dea315f7bb5ab6249e-2401x1000.png" alt="Diagram of an agent loop: a person talks to an AI model, which takes actions in the world, gets feedback and decides when to stop">
+      <figcaption class="credit">How an agent works: it acts, checks the result and acts again. Diagram: Anthropic, <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a> (2024).</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- 4 WHY NOW -->
+<section class="stop" data-name="Why now" aria-labelledby="t4">
+  <h2 id="t4">Why now?</h2>
+  <div class="tabs" role="tablist">
+    <button type="button" role="tab" aria-selected="true" data-tab="0">What agents can do</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="1">Using a computer</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="2">Cost</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="3">How many people use AI</button>
+  </div>
+  <div class="chart card" data-panel="0">
+    <p class="ctitle">Longest software task an AI agent can finish about half the time, in minutes of a skilled person's work</p>
+    <div class="bars" id="chart0"></div>
+    <p class="cnote">From about 4 minutes in 2023 to almost 5 hours in late 2025. It has doubled every few months.</p>
+    <p class="credit">Data: METR's time-horizon estimates (<a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">2025 paper</a>, <a href="https://metr.org/evaluations/gpt-5-report/" target="_blank" rel="noopener">GPT-5 report</a>, Claude Opus 4.5 result). METR has since updated its method, so exact numbers shift.</p>
+  </div>
+  <div class="chart card hide" data-panel="1">
+    <p class="ctitle">Share of everyday computer tasks an AI agent finishes on its own (OSWorld)</p>
+    <div class="bars" id="chart2"></div>
+    <p class="cnote">From 12% in 2024 to past the human score by late 2025.</p>
+    <p class="credit">Data: <a href="https://arxiv.org/abs/2404.07972" target="_blank" rel="noopener">OSWorld paper</a> (human score 72%), <a href="https://www.anthropic.com/news/developing-computer-use" target="_blank" rel="noopener">Anthropic</a>, <a href="https://openai.com/index/computer-using-agent/" target="_blank" rel="noopener">OpenAI</a>, <a href="https://www.anthropic.com/news/claude-sonnet-4-5" target="_blank" rel="noopener">Anthropic</a>, <a href="https://www.simular.ai/articles/simulars-computer-use-agent-outperforms-humans" target="_blank" rel="noopener">Simular</a>, Claude Fable 5 system card. The test was cleaned up in mid-2025, so later scores aren't exactly comparable.</p>
+  </div>
+  <div class="chart card hide" data-panel="2">
+    <p class="ctitle">Price of GPT-3.5-level AI, in dollars per million tokens (about 750,000 words)</p>
+    <div class="bars" id="chart3"></div>
+    <p class="cnote">280 times cheaper in two years. Agents take many steps, so this is what made them affordable.</p>
+    <p class="credit">Data: Stanford HAI, <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts" target="_blank" rel="noopener">AI Index 2025</a>, using Epoch AI data.</p>
+  </div>
+  <div class="chart card hide" data-panel="3">
+    <p class="ctitle">People using ChatGPT each week, in millions</p>
+    <div class="bars" id="chart1"></div>
+    <p class="cnote">From 100 million to 800 million people a week in two years.</p>
+    <p class="credit">Data: OpenAI announcements, reported by <a href="https://techcrunch.com/2025/03/06/chatgpt-doubled-its-weekly-active-users-in-under-6-months-thanks-to-new-releases/" target="_blank" rel="noopener">TechCrunch</a> and <a href="https://www.aol.com/articles/sam-altman-touts-chatgpts-800-091502060.html" target="_blank" rel="noopener">Business Insider</a>.</p>
+  </div>
+  <div class="talk card">
+    <p class="lbl">Hands up, 2 min</p>
+    <p>What's one job agents will do by the time you graduate? What should they never do?</p>
+  </div>
+</section>
+
+<!-- 5 GOING WRONG -->
+<section class="stop" data-name="Going wrong" aria-labelledby="t5">
+  <h2 id="t5">When agents go wrong</h2>
+  <div class="talk card" style="margin-top:.6rem">
+    <p class="lbl">Discuss, 2 min</p>
+    <p>An agent can look things up and act on its own. How could that go wrong? Name as many ways as you can.</p>
+    <button class="btn ghost" type="button" id="ways">Show five ways &rarr;</button>
+  </div>
+  <div class="ways hide" id="waysbox">
+    <div class="card way"><b>Hallucinations</b><span>It makes up facts or numbers, sounds sure, then acts on them.</span></div>
+    <div class="card way"><b>Prompt injection</b><span>It follows orders hidden in a web page, email or file it reads.</span></div>
+    <div class="card way"><b>Excessive permissions</b><span>It can reach more than its task needs, so one mistake hits real data.</span></div>
+    <div class="card way"><b>No human in the loop</b><span>It deletes, pays or sends with no one approving first.</span></div>
+    <div class="card way"><b>AI-powered attacks</b><span>It finds and uses security holes faster than people can respond.</span></div>
+  </div>
+  <div class="hide" id="examples5">
+    <p class="small" style="margin-top:1.4rem">Which of the five ways shows up in each story?</p>
+    <div class="ex2 ex3">
+        <div class="card story2">
+          <p class="small mono">April 2026</p>
+          <h3>The 9-second mistake</h3>
+          <p>A coding agent was fixing a small problem in a test system. It had a key that also opened the company's live system. <b>It deleted the live database and its backups in 9 seconds.</b> Nobody asked it to.</p>
+          <p class="credit">Sources: <a href="https://www.techspot.com/news/112207-ai-coding-agent-running-claude-wiped-startup-database.html" target="_blank" rel="noopener">TechSpot</a>, <a href="https://decrypt.co/365897/ai-agent-deletes-startup-database-9-seconds-founder-says" target="_blank" rel="noopener">Decrypt</a>.</p>
+        </div>
+        <div class="card story2">
+          <p class="small mono">July 2026</p>
+          <h3>An AI agent hacks Hugging Face</h3>
+          <p>Hugging Face hosts many of the world's open AI models. Over one weekend, an AI agent broke in on its own. <b>It took over 17,000 actions</b> and reached internal data and login keys. Hugging Face caught it using AI.</p>
+          <p class="credit">Sources: <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>, <a href="https://thenextweb.com/news/hugging-face-ai-agent-breach-glm-forensics" target="_blank" rel="noopener">TNW</a>.</p>
+        </div>
+      <figure class="fig card">
+        <img src="https://assets.claude.com/6f7a5b3eefb24ab09995198ab8b2fc29362b3e28.png" alt="Bar chart: share of attacks that tricked Anthropic's browser agent, before and after new defenses">
+        <figcaption><b>Prompt injection:</b> Anthropic attacked its own browser agent 123 ways. Better defenses cut the success rate in half, but not to zero.</figcaption>
+        <p class="credit">Chart: Anthropic, <a href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noopener">Piloting Claude for Chrome</a> (Aug 2025).</p>
+      </figure>
     </div>
   </div>
 </section>
 
-<!-- 9 NEXT UP -->
-<section class="stop" data-name="Next up" aria-labelledby="h9a">
-  <h2 id="h9a">Next up: how a model writes</h2>
-  <div class="nextgrid">
-    <div>
-      <h3>The next-word game</h3>
-      <p>Write one word on your slip. No talking. Then pick it here.</p>
-      <p class="prompt-big">Abu Dhabi in July is very <span id="mword">___</span></p>
-      <div class="row" id="words">
-        <button class="opt" type="button" data-w="hot">hot</button>
-        <button class="opt" type="button" data-w="humid">humid</button>
-        <button class="opt" type="button" data-w="sunny">sunny</button>
-        <button class="opt" type="button" data-w="crowded">crowded</button>
-        <button class="opt" type="button" data-w="other">something else</button>
-      </div>
-      <div class="bars hide" id="bars"></div>
-      <p class="fb" id="wordfb" aria-live="polite"></p>
-    </div>
-    <div>
-      <h3>Then: the Hallucination Hunt</h3>
-      <p>Ask ChatGPT something you can check. Catch it being wrong and sure of itself.</p>
-      <p><b>Best one wins.</b> Log the question, the answer, the truth and your source in your Build Journal.</p>
-      <p style="margin-top:1.4rem">Your agent's first piece is a model. Today you find out what it's good at, and where it makes things up.</p>
-      <div class="row" style="margin-top:1rem">
-        <button class="btn ghost" type="button" data-go="0">Back to start</button>
-      </div>
-    </div>
+<!-- 6 MAP -->
+<section class="stop" data-name="Your 8 days" aria-labelledby="t6">
+  <h2 id="t6">Your 8 days</h2>
+  <ol class="qs">
+    <li class="card"><span class="num">01 &middot; Days 1 to 3</span><b>What can AI agents do, and how do they work?</b></li>
+    <li class="card"><span class="num">02 &middot; Days 4 to 7</span><b>How do you build one that's useful and safe?</b></li>
+    <li class="card"><span class="num">03 &middot; Day 8</span><b>What impact can your agent make?</b></li>
+  </ol>
+  <div class="days" id="days"></div>
+  <div class="keyrow"><span><i></i>Learn the pieces</span><span><i class="c"></i>Your capstone</span></div>
+  <p class="dayq" id="dayq" aria-live="polite"></p>
+</section>
+
+<!-- 7 WHAT YOU'LL BUILD -->
+<section class="stop" data-name="What you'll build" aria-labelledby="t7">
+  <h2 id="t7">What you'll build</h2>
+  <p class="lead">An AI agent for impact. It starts simple, with one job and one real choice.</p>
+  <div class="flavors">
+    <div class="flavor card"><b>Startup idea</b><span class="s">An agent that could help a real user, pitched like a founder.</span></div>
+    <div class="flavor card"><b>Project for good</b><span class="s">An agent that helps a group or cause you care about.</span></div>
+    <div class="flavor card"><b>Research tool</b><span class="s">An agent that collects real data to answer a question.</span></div>
+  </div>
+  <div class="ask-end">
+    <p class="lbl">Your turn</p>
+    <p class="endq">What ideas do you have?</p>
+    <p class="small">Jot one down. You'll pick your capstone on Day 4.</p>
   </div>
 </section>
 
 </main>
 
 <nav class="bottom" aria-label="Tour">
-  <button class="btn ghost" type="button" id="prev">Prev</button>
-  <span class="mid">Arrow keys work too</span>
-  <button class="btn" type="button" id="next">Next</button>
+  <button class="btn ghost" type="button" id="prev">&larr; Prev</button>
+  <span class="mid"><span id="count">1 / 9</span><b id="cname">Start</b></span>
+  <button class="btn" type="button" id="next">Next &rarr;</button>
 </nav>
 
 <script>
 (function(){
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var stops = Array.prototype.slice.call(document.querySelectorAll('section.stop'));
-  var nav = document.getElementById('stopnav');
-  var countEl = document.getElementById('count');
-  var cur = 0;
-  var slugs = ['welcome','you-and-ai','seven-oclock','chatbot-or-agent','why-now','when-it-goes-wrong','map','what-youll-build','next-up'];
+  var stops = [].slice.call(document.querySelectorAll('section.stop'));
+  var pills = document.getElementById('pills'), prog = document.getElementById('prog');
+  var slugs = ['start','how-we-got-here','what-is-an-agent','watch-an-agent','chatbot-or-agent','why-now','going-wrong','your-8-days','what-youll-build'];
+  var cur = 0, seen = {};
+  function pop(el){ if(reduce||!el) return; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
 
   stops.forEach(function(s,i){
-    var b = document.createElement('button');
-    b.type='button'; b.textContent = s.dataset.name; b.dataset.go = i;
-    nav.appendChild(b);
+    var b = document.createElement('button'); b.type='button'; b.dataset.go=i; b.textContent = s.dataset.name;
+    pills.appendChild(b); prog.appendChild(document.createElement('i'));
   });
-
   function go(i, push){
     i = Math.max(0, Math.min(stops.length-1, i));
-    stops[cur].classList.remove('on');
-    cur = i;
-    stops[cur].classList.add('on');
-    countEl.textContent = (cur+1) + ' / ' + stops.length;
-    nav.querySelectorAll('button').forEach(function(b,j){ if(j===cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); });
+    stops[cur].classList.remove('on'); seen[cur]=1;
+    cur = i; stops[cur].classList.add('on');
+    document.getElementById('count').textContent = (cur+1) + ' / ' + stops.length;
+    pills.querySelectorAll('button').forEach(function(b,j){ if(j===cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); });
+    prog.querySelectorAll('i').forEach(function(x,j){ x.className = j<cur ? 'done' : (j===cur ? 'now' : ''); });
+    document.getElementById('cname').textContent = stops[cur].dataset.name;
     document.getElementById('prev').disabled = cur===0;
-    var nx = document.getElementById('next');
-    nx.disabled = cur===stops.length-1;
+    var nx = document.getElementById('next'); nx.disabled = cur===stops.length-1;
     window.scrollTo(0,0);
     if(push!==false){ try{ history.replaceState(null,'','#'+slugs[cur]); }catch(e){} }
-    var h = stops[cur].querySelector('h1,h2');
-    if(h && push!==false){ h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
-    if(cur===6) onMap();
+    if(cur===5 && window.__growWhy) window.__growWhy();
   }
-  document.addEventListener('click', function(e){
-    var t = e.target.closest('[data-go]');
-    if(t){ go(+t.dataset.go); }
-  });
+  document.addEventListener('click', function(e){ var t = e.target.closest('[data-go]'); if(t) go(+t.dataset.go); });
   document.getElementById('prev').onclick = function(){ go(cur-1); };
   document.getElementById('next').onclick = function(){ go(cur+1); };
   document.addEventListener('keydown', function(e){
-    var tag = (e.target.tagName||'').toLowerCase();
-    if(tag==='input' || tag==='textarea') return;
     if(e.altKey||e.ctrlKey||e.metaKey) return;
-    if(e.key==='ArrowRight'){ e.preventDefault(); go(cur+1); }
-    if(e.key==='ArrowLeft'){ e.preventDefault(); go(cur-1); }
+    if(e.key==='ArrowRight'){ go(cur+1); }
+    if(e.key==='ArrowLeft'){ go(cur-1); }
   });
 
-  function pop(el){ if(reduce||!el) return; el.classList.remove('pop'); void el.offsetWidth; el.classList.add('pop'); }
-
-  /* Stop 2: tallies and goals */
-  document.querySelectorAll('.tally').forEach(function(t){
-    var out = t.querySelector('output');
-    t.querySelectorAll('button').forEach(function(b){
-      b.onclick = function(){ var v = Math.max(0, (+out.value||0) + (+b.dataset.t)); out.value = v; out.textContent = v; pop(out); };
-    });
-  });
-  var goalBtns = document.querySelectorAll('#goals button');
-  function goalCount(){
-    var n = 0; goalBtns.forEach(function(b){ if(b.getAttribute('aria-pressed')==='true') n++; });
-    document.getElementById('goalcount').textContent = n===4 ? 'All 4 covered by the end of today. Nice.' : n + ' of 4 done. Click one when you\'ve covered it.';
-  }
-  goalBtns.forEach(function(b){
-    b.onclick = function(){
-      var on = b.getAttribute('aria-pressed')!=='true';
-      b.setAttribute('aria-pressed', on);
-      b.querySelector('.box').textContent = on ? '✓' : '';
-      pop(b.querySelector('.box')); goalCount();
-    };
-  });
-
-  /* Stop 3: the 7:00 agent */
-  var clock = document.getElementById('clock');
-  var stepsLi = document.querySelectorAll('#steps li');
-  var timers = [];
-  function wake(){
-    timers.forEach(clearTimeout); timers=[];
-    stepsLi.forEach(function(li){ li.classList.remove('lit'); });
-    document.getElementById('advice').classList.add('hide');
-    clock.textContent='6:59'; clock.classList.remove('ring');
-    document.getElementById('wake').disabled = true;
-    var d = reduce ? 0 : 1;
-    timers.push(setTimeout(function(){ clock.textContent='7:00'; clock.classList.add('ring'); stepsLi[0].classList.add('lit'); }, 700*d));
-    [1,2,3].forEach(function(i){ timers.push(setTimeout(function(){ stepsLi[i].classList.add('lit'); }, (700+i*800)*d)); });
-    timers.push(setTimeout(function(){
-      var a = document.getElementById('advice'); a.classList.remove('hide'); pop(a);
-      document.getElementById('q700').classList.remove('hide');
-      document.getElementById('wake').classList.add('hide');
-      document.getElementById('rewake').classList.remove('hide');
-      document.getElementById('wake').disabled = false;
-    }, (700+3*800+500)*d));
-  }
-  document.getElementById('wake').onclick = wake;
-  document.getElementById('rewake').onclick = wake;
-
-  function multiPick(boxId, fbId, total, finale){
-    var box = document.getElementById(boxId), fb = document.getElementById(fbId), found = 0;
-    box.querySelectorAll('.opt').forEach(function(b){
-      b.onclick = function(){
-        var ok = b.dataset.ok==='1';
-        if(!b.classList.contains('is-right') && !b.classList.contains('is-wrong') && ok) found++;
-        b.classList.remove('is-right','is-wrong');
-        b.classList.add(ok?'is-right':'is-wrong');
-        b.setAttribute('aria-pressed','true');
-        var extra = (ok && found===total) ? (finale ? ' ' + finale : ' That\'s all ' + total + '.') : (ok ? ' ' + found + ' of ' + total + ' found.' : '');
-        fb.innerHTML = '<b class="' + (ok?'r':'w') + '">' + (ok?'✓ ':'✗ ') + '</b>' + b.dataset.why + extra;
-        pop(b);
-      };
-    });
-  }
-  multiPick('q700opts','q700fb',3);
-  multiPick('qresp','qrespfb',3,'The agent can\'t own it, so the people around it do. That\'s a line in the AI Builder\'s Code you\'ll sign on Day 8: <b>I own what my agent does, even when it gets tricked.</b>');
-
-  function singlePick(boxId, fbId){
-    var box = document.getElementById(boxId), fb = document.getElementById(fbId);
-    box.querySelectorAll('.opt').forEach(function(b){
-      b.onclick = function(){
-        box.querySelectorAll('.opt').forEach(function(o){ o.classList.remove('is-right','is-wrong'); o.removeAttribute('aria-pressed'); });
-        var ok = b.dataset.ok==='1';
-        b.classList.add(ok?'is-right':'is-wrong'); b.setAttribute('aria-pressed','true');
-        fb.innerHTML = '<b class="' + (ok?'r':'w') + '">' + (ok?'✓ ':'✗ ') + '</b>' + b.dataset.why;
-        pop(b);
-      };
-    });
-  }
-  singlePick('qcommon','qcommonfb');
-
-  /* Stop 4: sort */
-  var items = [
-    {t:'ChatGPT answers your homework question', a:'chatbot', why:'You ask, it answers, then it waits. No tools, no next step.'},
-    {t:'An airline website chatbot answers questions about refunds', a:'chatbot', why:'It talks, but it doesn\'t act. Remember this one for later.'},
-    {t:'A robot vacuum that cleans every morning and steers around chairs', a:'agent', why:'A simple one. It starts on a clock, senses the room and decides where to go next.'},
-    {t:'A fridge app that shows a photo of what\'s inside', a:'neither', why:'It shows you a picture. It doesn\'t decide anything.'},
-    {t:'A restaurant app where you pick a time and tap Book', a:'neither', why:'You make every choice. The app just follows your taps.'},
-    {t:'An assistant that reads new emails and drafts replies for you to approve', a:'agent', why:'It starts on its own when mail arrives, uses tools and works toward a goal. You stay in charge of sending.'},
-    {t:'A phone alert that pings when rain is coming', a:'neither', why:'A fixed rule: same check, same message. Add a model that decides what to tell you and it starts to become an agent.'},
-    {t:'"Find a table for 4 on Friday and book it", and it does', a:'agent', why:'It plans steps, uses a browser and acts. Good ones ask before booking.'}
+  /* 1a: eras, click by click */
+  var eraItems = document.querySelectorAll('#eras .era'), ei = 0, ebtn = document.getElementById('erabtn');
+  ebtn.onclick = function(){
+    if(ei < eraItems.length){ eraItems[ei].classList.add('in'); pop(eraItems[ei]); ei++; }
+    if(ei < eraItems.length) ebtn.textContent = 'Next era'; else ebtn.classList.add('hide');
+  };
+  /* 1b: parts */
+  var parts = document.querySelectorAll('#parts .part'), pi = 0, pbtn = document.getElementById('partbtn');
+  pbtn.onclick = function(){
+    if(pi < parts.length){ parts[pi].classList.add('in'); pop(parts[pi]); pi++; }
+    if(pi < parts.length){ pbtn.textContent = 'Next part'; }
+    else { pbtn.classList.add('hide'); var e = document.getElementById('parteq'); e.classList.remove('hide'); pop(e); }
+  };
+  /* 2: the agent run */
+  var RUNS = [
+    {q:'Did our city\'s car-free day on Sunday actually clean the air? I\'m writing to the city council.', steps:[
+      {k:'think', t:'I need real air data, not a guess. Let me get the last 7 days.'},
+      {k:'call', name:'get_air_quality', args:'city: "our city", past_days: 7', out:'Sun: AQI 41\nWeek average: AQI 68'},
+      {k:'think', t:'Sunday was much cleaner. But wind can clear the air too. I should check before I credit the car-free day.'},
+      {k:'call', name:'get_weather', args:'city: "our city", day: "Sunday"', out:'Wind: 38 km/h (week average 12)'},
+      {k:'agent', t:'<b>Cleaner, but not proven.</b> Sunday\'s air (AQI 41) was much cleaner than the week\'s average (68). But it was also very windy, which clears the air. Suggest the council test it again on a calm day.<br><span class="small">Checked: air quality for 7 days, Sunday\'s wind.</span>'}
+    ]},
+    {q:'Would solar panels on our school roof pay for themselves? I\'m pitching it to our principal.', steps:[
+      {k:'think', t:'I need real sunlight and power prices for our area, not a guess.'},
+      {k:'call', name:'get_solar_potential', args:'place: "our school", roof: 400 m²', out:'About 72,000 kWh a year'},
+      {k:'call', name:'get_electricity_price', args:'area: "our town"', out:'$0.20 per kWh'},
+      {k:'think', t:'That saves about $14,400 a year. I still need the cost to install before I can say it pays off.'},
+      {k:'call', name:'search_web', args:'"school solar install cost 400 m²"', out:'Typical quotes: $110,000 to $140,000'},
+      {k:'agent', t:'<b>Likely yes, in about 8 to 10 years.</b> The roof could save about $14,400 a year, and panels usually last around 25 years. These are estimates, so get two real quotes before the pitch.<br><span class="small">Checked: sunlight, power price, install costs.</span>'}
+    ]},
+    {q:'Which food bank near me needs volunteers most this Saturday? I can do 3 hours.', steps:[
+      {k:'think', t:'I need real open shifts for Saturday, not just a list of names.'},
+      {k:'call', name:'find_places', args:'type: "food bank", within: 5 km', out:'Eastside Pantry, Hope Kitchen, Riverside Food Hub'},
+      {k:'call', name:'get_volunteer_shifts', args:'places: all 3, day: "Saturday"', out:'Eastside: 0 of 6 spots open\nHope Kitchen: 5 of 8 open\nRiverside: 2 of 10 open'},
+      {k:'think', t:'Hope Kitchen needs the most help. Let me check the shift fits 3 hours.'},
+      {k:'call', name:'get_shift_details', args:'place: "Hope Kitchen", day: "Saturday"', out:'9:00 to 12:00, sorting donations, ages 14+'},
+      {k:'agent', t:'<b>Hope Kitchen.</b> It has 5 of 8 spots open, 9:00 to 12:00, sorting donations. You need to be 14 or older. Spots can fill fast, so sign up soon.<br><span class="small">Checked: 3 food banks, Saturday shifts, shift details.</span>'}
+    ]}
   ];
-  var si = 0, right = 0, done = 0;
-  var exEl = document.getElementById('sortex'), nEl = document.getElementById('sortn'), fbEl = document.getElementById('sortfb');
-  var nextBtn = document.getElementById('sortnext'), scoreEl = document.getElementById('sortsc');
+  var trace = document.getElementById('trace'), qbtns = document.querySelectorAll('#qpick .opt'), timers = [];
+  function render(s){
+    var el = document.createElement('div'); el.className='step';
+    if(s.k==='user'){ el.className='msg user step'; el.textContent = s.t; }
+    if(s.k==='think'){ el.className='think step'; el.textContent = 'Thinking: ' + s.t; }
+    if(s.k==='call'){ el.className='call step'; el.innerHTML = '<div class="hd"><span>' + s.name + '</span><span class="st">tool call</span></div><div class="bd">' + s.args + '\n→ ' + s.out + '</div>'; }
+    if(s.k==='agent'){ el.className='msg agent step'; el.innerHTML = s.t; }
+    trace.appendChild(el); trace.scrollTop = trace.scrollHeight;
+  }
+  function run(n){
+    timers.forEach(clearTimeout); timers=[];
+    var h = document.getElementById('tracehint'); if(h) h.remove();
+    [].slice.call(trace.querySelectorAll('.step')).forEach(function(x){ x.remove(); });
+    qbtns.forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.run==n); });
+    render({k:'user', t:RUNS[n].q});
+    var steps = RUNS[n].steps, gap = reduce ? 0 : 1300;
+    steps.forEach(function(s,i){ timers.push(setTimeout(function(){ render(s); }, 700 + i*gap)); });
+    timers.push(setTimeout(function(){
+      var t = document.getElementById('talk2'); if(t.classList.contains('hide')){ t.classList.remove('hide'); pop(t); }
+    }, 800 + steps.length*gap));
+  }
+  qbtns.forEach(function(b){ b.setAttribute('aria-pressed','false'); b.onclick = function(){ run(+b.dataset.run); }; });
+  document.getElementById('ans2').onclick = function(){ this.classList.add('hide'); var b = document.getElementById('ans2box'); b.classList.remove('hide'); pop(b); };
+
+  /* 3: chatbot or agent */
+  var ITEMS = [
+    {t:'ChatGPT answers your homework question.', a:'chatbot', why:'You ask, it answers, then it waits.'},
+    {t:'Every morning it checks the air and tells the school board which schools should keep recess inside.', a:'agent', why:'A clock starts it, it looks up data and it makes a choice.'},
+    {t:'A website chat answers questions about a store\'s refund rules.', a:'chatbot', why:'It talks, but it doesn\'t look anything up or act.'},
+    {t:'"Find a table for 4 on Friday and book it." And it does.', a:'agent', why:'It plans steps, uses tools and acts. Good ones ask before booking.'}
+  ];
+  var si = 0, right = 0;
+  var exEl = document.getElementById('sortex'), nEl = document.getElementById('sortn'), fbEl = document.getElementById('sortfb'), nextBtn = document.getElementById('sortnext');
   var sbtns = document.querySelectorAll('#sortbtns .opt');
-  var label = {chatbot:'Chatbot',agent:'Agent',neither:'Neither'};
-  function showItem(){
-    if(si>=items.length){
-      exEl.textContent = 'All 8 sorted';
-      nEl.textContent = 'Done';
-      document.getElementById('sortbtns').classList.add('hide');
-      nextBtn.classList.add('hide');
-      fbEl.innerHTML = right>=6 ? 'You can tell them apart. Now see why.' : 'Some of these are tricky on purpose. See why below.';
-      return;
-    }
-    document.getElementById('sortbtns').classList.remove('hide');
-    nEl.textContent = (si+1) + ' of ' + items.length;
-    exEl.textContent = items[si].t; pop(exEl);
-    fbEl.textContent = '';
+  function show(){
+    nEl.textContent = (si+1) + ' of ' + ITEMS.length;
+    exEl.textContent = ITEMS[si].t; pop(exEl); fbEl.textContent='';
     nextBtn.classList.add('hide');
     sbtns.forEach(function(b){ b.disabled=false; b.classList.remove('is-right','is-wrong'); });
   }
   sbtns.forEach(function(b){
     b.onclick = function(){
-      var it = items[si], ok = b.dataset.bin===it.a;
-      sbtns.forEach(function(o){ o.disabled = true; if(o.dataset.bin===it.a) o.classList.add('is-right'); });
-      if(!ok) b.classList.add('is-wrong');
-      done++; if(ok) right++;
-      fbEl.innerHTML = '<b class="' + (ok?'r':'w') + '">' + (ok?'✓ Yes, ':'✗ It\'s ') + label[it.a].toLowerCase() + '.</b> ' + it.why;
-      var li = document.createElement('li');
-      li.innerHTML = '<span class="m ' + (ok?'r':'w') + '">' + (ok?'✓':'✗') + '</span> ' + it.t.replace(/"/g,'');
-      document.getElementById('bin-'+it.a).appendChild(li); pop(li);
-      scoreEl.textContent = done + ' sorted, ' + right + ' right';
+      var it = ITEMS[si], ok = b.dataset.bin===it.a;
+      sbtns.forEach(function(o){ o.disabled=true; if(o.dataset.bin===it.a) o.classList.add('is-right'); });
+      if(!ok) b.classList.add('is-wrong'); else right++;
+      var last = si===ITEMS.length-1;
+      fbEl.innerHTML = '<b style="color:' + (ok?'var(--right)':'var(--wrong)') + '">' + (ok?'Yes. ':'It\'s ' + (it.a==='agent'?'an agent':'a chatbot') + '. ') + '</b>' + it.why + (last ? '<br><b>Your score: ' + right + ' of ' + ITEMS.length + '.</b>' : '');
       nextBtn.classList.remove('hide');
-      nextBtn.textContent = si===items.length-1 ? 'See the result' : 'Next one';
-      nextBtn.focus();
+      nextBtn.textContent = si===ITEMS.length-1 ? 'So what makes an agent?' : 'Next';
     };
   });
-  nextBtn.onclick = function(){ si++; showItem(); if(si<items.length) sbtns[0].focus(); };
-  document.getElementById('sortreset').onclick = function(){
-    si=0; right=0; done=0; scoreEl.textContent='0 sorted';
-    ['chatbot','agent','neither'].forEach(function(k){ document.getElementById('bin-'+k).innerHTML=''; });
-    showItem();
+  nextBtn.onclick = function(){
+    if(si===ITEMS.length-1){
+      document.getElementById('sort').classList.add('hide');
+      var d = document.getElementById('def'); d.classList.remove('hide'); pop(d); return;
+    }
+    si++; show();
   };
-  showItem();
-  document.getElementById('whatmakes').onclick = function(){
-    var m = document.getElementById('makes');
-    m.classList.remove('hide');
-    renderStrip(document.getElementById('strip4'), 1, 0, true);
-    m.scrollIntoView({behavior: reduce?'auto':'smooth', block:'start'});
-  };
+  show();
 
-  /* Strip data (labels from the Day 8 "Everything you built" slide) */
+  /* 4: why now */
+  var CH = [
+    {el:'chart0', unit:'', data:[['GPT-4','2023',4,'4 min'],['Claude 3.7 Sonnet','Feb 2025',60,'1 hr'],['o3','Apr 2025',92,'1.5 hr'],['GPT-5','Aug 2025',137,'2.3 hr'],['Claude Opus 4.5','Nov 2025',289,'4.8 hr']]},
+    {el:'chart2', max:100, line:[72,'Humans 72%'], data:[['GPT-4V','Apr 2024',12,'12%'],['Claude 3.5','Oct 2024',15,'15%'],['OpenAI CUA','Jan 2025',38,'38%'],['Sonnet 4.5','Sep 2025',61,'61%'],['Agent S','Dec 2025',73,'73%'],['Claude Fable 5','Jun 2026',85,'85%']]},
+    {el:'chart3', min:1.5, data:[['GPT-3.5','Nov 2022',20,'$20'],['Gemini 1.5 Flash-8B','Oct 2024',0.07,'7¢']]},
+    {el:'chart1', unit:'M', data:[['','Nov 2023',100,'100M'],['','Aug 2024',200,'200M'],['','Dec 2024',300,'300M'],['','Feb 2025',400,'400M'],['','Oct 2025',800,'800M']]}
+  ];
+  CH.forEach(function(c){
+    var max = c.max || Math.max.apply(null, c.data.map(function(d){return d[2];}));
+    var box = document.getElementById(c.el);
+    box.style.gridTemplateColumns = 'repeat(' + c.data.length + ',1fr)';
+    box.innerHTML = c.data.map(function(d){
+      return '<div class="bcol"><span class="bval">' + d[3] + '</span><span class="btrack"><span class="bfill" data-h="' + Math.max(c.min||0, d[2]/max*100).toFixed(1) + '"></span></span><span class="blab"><b>' + d[1] + '</b>' + (d[0]?'<br>'+d[0]:'') + '</span></div>';
+    }).join('') + (c.line ? '<span class="hline" data-v="' + (c.line[0]/max) + '"><em>' + c.line[1] + '</em></span>' : '');
+  });
+  function placeLines(panel){
+    panel.querySelectorAll('.hline').forEach(function(l){
+      var tr = l.parentNode.querySelector('.btrack'); if(!tr) return;
+      l.style.top = (tr.offsetTop + tr.offsetHeight*(1-parseFloat(l.dataset.v))) + 'px';
+    });
+  }
+  window.addEventListener('resize', function(){ var p=document.querySelector('[data-panel]:not(.hide)'); if(p) placeLines(p); });
+  function grow(panel){
+    placeLines(panel);
+    var fills = panel.querySelectorAll('.bfill');
+    fills.forEach(function(f){ f.style.height='0%'; });
+    fills.forEach(function(f,i){ setTimeout(function(){ f.style.height = f.dataset.h + '%'; }, reduce?0:150 + i*220); });
+  }
+  document.querySelectorAll('[data-tab]').forEach(function(t){
+    t.onclick = function(){
+      document.querySelectorAll('[data-tab]').forEach(function(o){ o.setAttribute('aria-selected', o===t); });
+      document.querySelectorAll('[data-panel]').forEach(function(p){ var on = p.dataset.panel===t.dataset.tab; p.classList.toggle('hide', !on); if(on) grow(p); });
+    };
+  });
+  window.__growWhy = function(){ grow(document.querySelector('[data-panel]:not(.hide)')); };
+  /* 5: going wrong */
+  document.getElementById('ways').onclick = function(){
+    this.classList.add('hide');
+    var w = document.getElementById('waysbox'); w.classList.remove('hide'); pop(w);
+    var x = document.getElementById('examples5'); x.classList.remove('hide');
+  };
+  /* 6: map */
   var DAYS = [
-    {d:1, tag:'Trust Game', title:'Meet the Machine', q:'How do AI models work, and how do you get them to do what you want?', piece:'Model and instructions', sub:'Reads and decides',
-      what:['The next-word game and the Hallucination Hunt','Write instructions and test them with 5 questions','Build your first agent in Make'], play:'Trust Game: your first practice match'},
-    {d:2, tag:'Trust Game, Lemonade Stand', title:'Agents Taking Action', q:'What turns a chatbot into an agent?', piece:'Tools', sub:'Get live data',
-      what:['Give your agent its first tool: live weather','Watch its answer change when it can look things up','Your first Tool Card'], play:'Trust Game tournament, then Lemonade Stand'},
-    {d:3, tag:'Trust Game', title:'Agent Memory and Autonomy', q:'How does an agent know things, and how does it work on its own?', piece:'Trigger and memory', sub:'Message or clock. Memory and log',
-      what:['Give your agent notes it can read next time','Build a watcher that runs on a clock','Leave it running overnight'], play:'Trust Game, now with memory'},
-    {d:4, title:'Capstone Kickoff', q:'Who is your agent for, and how will you know it works?', piece:'Plan and test', sub:'One real choice for one person',
-      what:['Pick your idea and pitch it in 30 seconds','Plan it and write 5 tests','Run a first version on live data'], play:''},
-    {d:5, title:'Capstone V1', q:'How do you get your agent working, run after run?', piece:'Output', sub:'Your page. Cost. A person approves',
-      what:['Get it working end to end','Its page goes live','Work out what each run costs'], play:''},
-    {d:6, tag:'Guard the Secret', title:'Agent Safety and Defense', q:'How can you protect your agent?', piece:'Safety rules', sub:'Limits on what your agent can do, tested with attacks',
-      what:['Learn how agents get tricked','Write safety rules and attack your own agent','Earn the right to run overnight'], play:'Guard the Secret'},
-    {d:7, title:'Red Team + Demo Prep', q:'How do you prove your agent works?', piece:'Red team', sub:'Red team, then retest',
-      what:['Attack a partner\'s agent and they attack yours','Fix the worst bug and test again','Rehearse your demo'], play:''},
-    {d:8, tag:'Visitors come', title:'Demo Day', q:'Can you show what you built and explain how it works?', piece:'Demo', sub:'You show all of it working together',
-      what:['Make your Agent Card','Demo live to visitors in 3 minutes','Awards'], play:'Demo Day, with visitors'}
+    {t:'Meet the Machine', q:'How do AI models work, and how do you get them to do what you want?'},
+    {t:'Agents Taking Action', q:'What turns a chatbot into an agent?'},
+    {t:'Memory and Autonomy', q:'How does an agent know things, and how does it work on its own?'},
+    {t:'Capstone Kickoff', q:'Who is your agent for, and how will you know it works?'},
+    {t:'Capstone V1', q:'How do you get your agent working, run after run?'},
+    {t:'Safety and Defense', q:'How can you protect your agent?'},
+    {t:'Red Team + Demo Prep', q:'How do you prove your agent works?'},
+    {t:'Demo Day', q:'Can you show what you built and explain how it works?'}
   ];
-
-  function renderStrip(el, built, now, animateLast){
-    el.innerHTML = '';
-    DAYS.forEach(function(x,i){
-      var p = document.createElement('div');
-      p.className = 'piece' + (i<built?' built':'') + (i===now?' now':'');
-      p.innerHTML = '<span class="d">Day ' + x.d + '</span><b>' + x.piece + '</b>';
-      el.appendChild(p);
-      if(animateLast && i===built-1 && !reduce){ p.classList.add('snap'); }
-    });
-  }
-
-  /* Stop 7: map */
-  var mapEl = document.getElementById('mapdays'), detail = document.getElementById('detail');
-  var mapBuilt = 0, sel = -1, playing = [];
+  var daysEl = document.getElementById('days'), dayq = document.getElementById('dayq');
   DAYS.forEach(function(x,i){
-    var b = document.createElement('button');
-    b.type='button'; b.className='day'; b.setAttribute('aria-pressed','false');
-    b.innerHTML = '<span class="dt"><span class="grp">' + (i<3?'Foundations':'Capstone') + '</span>Day ' + x.d + '<b>' + x.title + '</b>' + (x.tag ? '<i>' + x.tag + '</i>' : '') + '</span>' +
-      '<span class="piece"><b>' + x.piece + '</b></span>';
-    b.onclick = function(){ stopPlay(); pick(i, true); };
-    mapEl.appendChild(b);
+    var b = document.createElement('button'); b.type='button'; b.className='day' + (i>2?' cap':''); b.setAttribute('aria-pressed','false');
+    b.innerHTML = '<span class="dn">DAY ' + (i+1) + '</span><b>' + x.t + '</b>';
+    b.onclick = function(){ pickDay(i); };
+    daysEl.appendChild(b);
   });
-  var dayBtns = mapEl.querySelectorAll('.day');
-  function paint(snapIdx){
-    dayBtns.forEach(function(b,i){
-      var p = b.querySelector('.piece');
-      p.className = 'piece' + (i<mapBuilt?' built':'') + (i===sel?' now':'');
-      if(i===snapIdx && !reduce){ void p.offsetWidth; p.classList.add('snap'); }
-      b.setAttribute('aria-pressed', i===sel ? 'true':'false');
-    });
+  function pickDay(i){
+    daysEl.querySelectorAll('.day').forEach(function(b,j){ b.setAttribute('aria-pressed', j===i); });
+    dayq.innerHTML = '<b>Day ' + (i+1) + ':</b> ' + DAYS[i].q; pop(dayq);
   }
-  function pick(i, fromClick){
-    var grew = i+1 > mapBuilt;
-    sel = i; mapBuilt = Math.max(mapBuilt, i+1);
-    if(fromClick) mapBuilt = i+1;
-    paint(grew ? i : -1);
-    var x = DAYS[i];
-    var tail = i===7 ? 'Your agent is complete. Everything you built, working together.' : (8-(i+1)) + ' more ' + ((8-(i+1))===1?'piece':'pieces') + ' to go.';
-    detail.innerHTML = '<div><h3>Day ' + x.d + ': ' + x.title + '</h3><p class="q">' + x.q + '</p><ul>' +
-      x.what.map(function(w){return '<li>'+w+'</li>';}).join('') + '</ul>' + (x.play ? '<p style="font-size:.88rem;margin:.4rem 0 0"><b>' + (x.d===8?'The big day:':'You play:') + '</b> ' + x.play + '</p>' : '') + '</div>' +
-      '<div class="addp"><b>Your agent gets: ' + x.piece + '</b><p style="margin:.1rem 0 .5rem">' + x.sub + '</p><p class="small">' + tail + '</p></div>';
-  }
-  function stopPlay(){ playing.forEach(clearTimeout); playing=[]; document.getElementById('buildall').disabled=false; }
-  document.getElementById('buildall').onclick = function(){
-    stopPlay(); mapBuilt = 0; sel = -1; paint(-1);
-    this.disabled = true;
-    var gap = reduce ? 0 : 520;
-    DAYS.forEach(function(x,i){ playing.push(setTimeout(function(){ pick(i,true); if(i===7) document.getElementById('buildall').disabled=false; }, 150 + i*gap)); });
-  };
-  document.getElementById('clearall').onclick = function(){ stopPlay(); mapBuilt=0; pick(0,true); };
-  var mapSeen = false;
-  function onMap(){ if(!mapSeen){ mapSeen = true; pick(0,true); } }
+  pickDay(0);
 
-  /* Stop 8: what you'll build */
-  var EX = [
-    {k:'PE Air Watch', who:'our PE teachers', dec:'if PE can go outside', chk:'the air quality', nm:'PE Air Watch', for:'For our PE teachers', v:'OK OUTSIDE', why:'The air is 98 (Moderate), so outdoor PE is fine today.', c:'Checked: air now, today\'s air status.'},
-    {k:'Buy, Wait or Skip', who:'me', dec:'whether to buy a game today', chk:'live game deals', nm:'Buy, Wait or Skip', for:'For me', v:'WAIT', why:'Your game is on sale, but it was cheaper last time, so wait for a better deal.', c:'Checked: today\'s deals, my last note.'},
-    {k:'Family Quake Check', who:'my dad', dec:'whether to call family abroad', chk:'earthquakes near them', nm:'Family Quake Check', for:'For my dad', v:'ALL QUIET', why:'No big earthquakes near our family\'s city since yesterday. No need to call about it.', c:'Checked: big quakes worldwide, quakes near their city.'},
-    {k:'Trip Money Helper', who:'my family', dec:'how much money to change and what to pack', chk:'exchange rates and the forecast', nm:'Trip Money Helper', for:'For my family', v:'PACK LAYERS', why:'Cool evenings where we\'re going this weekend, so bring a jacket.', c:'Checked: exchange rate, weekend forecast.'}
-  ];
-  var exBox = document.getElementById('examples'), own = document.getElementById('own');
-  function setSentence(w,d,c){
-    document.getElementById('sentence').innerHTML = 'My agent helps <span class="blank">' + esc(w||'___') + '</span> decide <span class="blank">' + esc(d||'___') + '</span> by checking <span class="blank">' + esc(c||'___') + '</span>.';
-  }
-  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function showEx(i){
-    exBox.querySelectorAll('.opt').forEach(function(b,j){ b.classList.toggle('picked', j===i); b.setAttribute('aria-pressed', j===i); });
-    if(i===EX.length){ own.classList.remove('hide'); ownUpdate(); return; }
-    own.classList.add('hide');
-    var e = EX[i];
-    setSentence(e.who, e.dec, e.chk);
-    document.getElementById('pnm').textContent = e.nm;
-    document.getElementById('pfor').textContent = e.for;
-    var v = document.getElementById('pverdict'); v.textContent = e.v; pop(v);
-    document.getElementById('pwhy').textContent = e.why;
-    document.getElementById('pchecked').textContent = e.c;
-  }
-  function ownUpdate(){
-    var a = document.getElementById('o1').value.trim(), b = document.getElementById('o2').value.trim(), c = document.getElementById('o3').value.trim();
-    setSentence(a,b,c);
-    document.getElementById('pnm').textContent = 'Your agent\'s name';
-    document.getElementById('pfor').textContent = 'For ' + (a || '___');
-    document.getElementById('pverdict').textContent = 'ITS CHOICE, IN 5 WORDS';
-    document.getElementById('pwhy').textContent = 'Why: one plain sentence' + (b ? ' about ' + b : '') + ', with the number it found.';
-    document.getElementById('pchecked').textContent = 'Checked: ' + (c || '___');
-  }
-  EX.concat([{k:'Your own'}]).forEach(function(e,i){
-    var b = document.createElement('button'); b.type='button'; b.className='opt'; b.textContent = e.k;
-    b.onclick = function(){ showEx(i); if(i===EX.length) document.getElementById('o1').focus(); };
-    exBox.appendChild(b);
-  });
-  ['o1','o2','o3'].forEach(function(id){ document.getElementById(id).addEventListener('input', ownUpdate); });
-  showEx(0);
-
-  /* Stop 9: next word */
-  var ODDS = [['hot',62],['humid',18],['sunny',9],['crowded',4],['other',7]];
-  document.querySelectorAll('#words .opt').forEach(function(b){
-    b.onclick = function(){
-      var w = b.dataset.w;
-      document.querySelectorAll('#words .opt').forEach(function(o){ o.classList.toggle('picked', o===b); });
-      document.getElementById('mword').textContent = w==='other' ? '?' : w;
-      var bars = document.getElementById('bars'); bars.classList.remove('hide');
-      bars.innerHTML = ODDS.map(function(o){ return '<div class="bar' + (o[0]===w?' mine':'') + '"><b>' + o[0] + '</b><span class="track"><span class="fill" data-p="' + o[1] + '"></span></span><span class="pc">' + o[1] + '%</span></div>'; }).join('');
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){ bars.querySelectorAll('.fill').forEach(function(f){ f.style.width = f.dataset.p + '%'; }); }); });
-      var p = ODDS.filter(function(o){return o[0]===w;})[0][1];
-      var msg = w==='hot' ? 'Same as the model\'s top pick in this example. It would say "hot" about 6 times in 10.' :
-        (w==='other' ? 'A rare word. The model sometimes picks one too, about 7 times in 100 in this example.' :
-        'The model could pick "' + w + '" too, about ' + p + ' times in 100 in this example. It doesn\'t always take the top word.');
-      document.getElementById('wordfb').innerHTML = '<b>Example odds.</b> ' + msg + ' Now ask ChatGPT in three new chats.';
-    };
-  });
-
-  /* Stop 5 reveals and stop 6 cases/risks */
-  document.querySelectorAll('[data-more]').forEach(function(b){
-    b.onclick = function(){
-      var m = b.nextElementSibling, open = b.getAttribute('aria-expanded')!=='true';
-      m.classList.toggle('hide', !open); b.setAttribute('aria-expanded', open);
-      b.textContent = open ? 'Hide' : 'What did it do?';
-      if(open) pop(m);
-    };
-  });
-  ['caseA','caseB'].forEach(function(id){
-    var c = document.getElementById(id), opts = c.querySelectorAll('.opt'), rev = c.querySelector('.reveal');
-    opts.forEach(function(b){
-      b.onclick = function(){
-        opts.forEach(function(o){ o.disabled = true; if(o.dataset.ok==='1') o.classList.add('is-right'); });
-        if(b.dataset.ok!=='1') b.classList.add('is-wrong');
-        var note = document.createElement('p');
-        note.innerHTML = b.dataset.ok==='1' ? '<b class="r" style="color:var(--right)">✓ You called it.</b>' : '<b style="color:var(--wrong)">✗ Not this time.</b>';
-        rev.insertBefore(note, rev.firstChild);
-        rev.classList.remove('hide'); pop(rev);
-      };
-    });
-  });
-  document.querySelectorAll('.risk').forEach(function(b){
-    b.onclick = function(){ var o = b.getAttribute('aria-expanded')!=='true'; b.setAttribute('aria-expanded', o); if(o) pop(b); };
-  });
-
-  /* start */
-  var h = (location.hash||'').replace('#','');
-  var start = slugs.indexOf(h); if(h==='map') start = 6;
+  var h = (location.hash||'').replace('#',''), start = slugs.indexOf(h);
   go(start<0?0:start, false);
 })();
 </script>
