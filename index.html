@@ -206,6 +206,8 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .chip.lit b,.chip.lit span{color:#fff}
 .bignum{font-family:"Martian Mono",ui-monospace,monospace;font-weight:700;font-size:1.6rem;color:var(--navy);line-height:1.25;margin:.3rem 0 .6rem}
 .q2{margin:.8rem 0 .5rem}
+.hookloop{width:14rem;height:auto;display:block;margin:0 0 1rem -.4rem}
+@media (prefers-reduced-motion: reduce){.hookloop animateMotion{display:none}}
 .qpick{margin-top:.2rem}
 .qpick .opt{width:100%;margin-bottom:.5rem;font-size:.95rem}
 .qpick .opt[aria-pressed="true"]{background:var(--navy);color:#fff}
@@ -276,6 +278,13 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 <section class="stop" data-name="Start" aria-labelledby="t1">
   <div class="hook">
     <p class="kicker">D a y &nbsp;1 &nbsp;/ &nbsp;8</p>
+    <svg class="hookloop" viewBox="0 0 300 120" aria-hidden="true">
+      <circle id="lp" cx="150" cy="60" r="44" fill="none" stroke="#DCDEEC" stroke-width="2.5" stroke-dasharray="6 6"/>
+      <g><circle cx="150" cy="16" r="15" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="147" cy="13" r="5" fill="none" stroke="#2E3066" stroke-width="2"/><path d="M151 17l4 4" stroke="#2E3066" stroke-width="2.5" stroke-linecap="round"/></g>
+      <g><circle cx="188" cy="82" r="15" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><path d="M181 88v-6l7-7 7 7v6" fill="none" stroke="#2E3066" stroke-width="2" stroke-linejoin="round"/></g>
+      <g><circle cx="112" cy="82" r="15" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><path d="M114 73l-6 10h7l-3 9 8-12h-7z" fill="#2E3066"/></g>
+      <circle r="6" fill="#F6B48A"><animateMotion dur="4s" repeatCount="indefinite" path="M150 16 A44 44 0 1 1 149.9 16"/></circle>
+    </svg>
     <h1 id="t1">Agentic AI for Impact</h1>
     <p class="big">In 8 days, you'll build an <b>AI agent that works on a real problem</b>, for a real person or a cause you care about.</p>
     <div class="row"><button class="btn" type="button" data-go="1">Get started &rarr;</button></div>
@@ -329,6 +338,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     </li>
   </ol>
   <div class="row" style="margin-top:1rem"><button class="btn" type="button" id="erabtn">Show the first era</button></div>
+  <div class="talk card hide" id="eratalk" style="margin-top:1rem"><p class="lbl">Hands up, 1 min</p><p>What do you think comes after agents?</p></div>
 </section>
 
 <!-- 1b WHAT IS AN AGENT -->
@@ -346,13 +356,13 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <div class="card part"><span class="pn">05</span><b>A trigger</b><span>A message or a clock starts it, even while you sleep.</span></div>
   </div>
   <div class="row" style="margin-top:1rem"><button class="btn" type="button" id="partbtn">Show the first part</button></div>
-  <div class="hide" id="parteq" style="margin-top:1.2rem"><p class="eq">An AI agent is AI that can <span>take action on its own</span>.</p><p>It needs a model, tools and a choice. Add memory and a trigger, and it keeps working even when you're not there.</p></div>
+  <div class="hide" id="parteq" style="margin-top:1.2rem"><p class="eq">An AI agent is AI that can <span>take action on its own</span>.</p></div>
 </section>
 
 <!-- 2 WATCH AN AGENT WORK -->
 <section class="stop" data-name="Watch an agent" aria-labelledby="t2">
   <h2 id="t2">Watch an agent work</h2>
-  <p class="lead">Pick a question. Watch what the agent does before it answers.</p>
+  <p class="lead">Pick a question. Predict what it looks up first.</p>
   <div class="runwrap">
     <div>
       <div class="qpick" id="qpick">
@@ -393,6 +403,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
         <button class="opt" type="button" data-bin="agent">Agent</button>
       </div>
       <p class="fb" id="sortfb" aria-live="polite"></p>
+      <div class="talk card hide" id="sorttalk" style="margin-top:1rem"><p class="lbl">Discuss, 1 min</p><p>What did all the agents have in common?</p></div>
     </div>
     <div class="row" style="margin-top:.8rem"><button class="btn hide" type="button" id="sortnext">Next</button></div>
   </div>
@@ -402,12 +413,12 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 <section class="stop" data-name="Why now" aria-labelledby="t4">
   <h2 id="t4">Why now?</h2>
   <div class="tabs" role="tablist">
-    <button type="button" role="tab" aria-selected="true" data-tab="0">What agents can do</button>
+    <button type="button" role="tab" aria-selected="true" data-tab="3">How many people use AI</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="0">What agents can do</button>
     <button type="button" role="tab" aria-selected="false" data-tab="1">Using a computer</button>
-    <button type="button" role="tab" aria-selected="false" data-tab="2">Cost</button>
-    <button type="button" role="tab" aria-selected="false" data-tab="3">How many people use AI</button>
+    <button type="button" role="tab" aria-selected="false" data-tab="2">Cost (original chart)</button>
   </div>
-  <div class="chart card" data-panel="0">
+  <div class="chart card hide" data-panel="0">
     <div class="bars" id="chart0"></div>
     <p class="cnote">The longest software task an agent can finish half the time, measured in a person's work time. It keeps doubling.</p>
     <p class="credit">Source: <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">METR</a>.</p>
@@ -422,7 +433,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <p class="cnote">Using AI got 280 times cheaper in two years. Agents take many steps, so this made them affordable.</p>
     <p class="credit">Chart: Stanford HAI, <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts" target="_blank" rel="noopener">AI Index 2025</a>.</p>
   </div>
-  <div class="chart card hide" data-panel="3">
+  <div class="chart card" data-panel="3">
     <div class="bars" id="chart1"></div>
     <p class="cnote">People using ChatGPT each week. From 1 million to 1.2 billion in under four years.</p>
     <p class="credit">Source: OpenAI, via <a href="https://techcrunch.com/2026/02/27/chatgpt-reaches-900m-weekly-active-users" target="_blank" rel="noopener">TechCrunch</a> and <a href="https://fourweekmba.com/ai-chatgpt-12b-weekly-users-devday-2026-distribution/" target="_blank" rel="noopener">DevDay 2026</a>.</p>
@@ -483,14 +494,14 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   <h2 id="t7">What you'll build</h2>
   <p class="lead">An AI agent for impact. It starts simple, with one job and one real choice.</p>
   <div class="flavors">
-    <div class="flavor card"><b>Startup idea</b><span class="s">An agent that could help a real user, pitched like a founder.</span></div>
-    <div class="flavor card"><b>Project for good</b><span class="s">An agent that helps a group or cause you care about.</span></div>
-    <div class="flavor card"><b>Research tool</b><span class="s">An agent that collects real data to answer a question.</span></div>
+    <div class="flavor card"><div class="qimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M38 8a15 15 0 0 0-9 27c2 2 3 4 3 7h12c0-3 1-5 3-7a15 15 0 0 0-9-27z" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-linejoin="round"/><path d="M33 48h10M34 53h8" stroke="#2E3066" stroke-width="2.5" stroke-linecap="round"/><path d="M60 14l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#F6B48A"/></svg></div><b>Startup idea</b><span class="s">An agent that could help a real user, pitched like a founder.</span></div>
+    <div class="flavor card"><div class="qimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M38 50S12 35 12 20a12 12 0 0 1 26-5 12 12 0 0 1 26 5c0 15-26 30-26 30z" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-linejoin="round"/><circle cx="38" cy="26" r="5" fill="#F6B48A"/></svg></div><b>Project for good</b><span class="s">An agent that helps a group or cause you care about.</span></div>
+    <div class="flavor card"><div class="qimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M10 52h60M10 52V8" stroke="#2E3066" stroke-width="2.5"/><rect x="18" y="34" width="9" height="18" fill="#2E3066"/><rect x="33" y="24" width="9" height="28" fill="#2E3066"/><rect x="48" y="14" width="9" height="38" fill="#F6B48A"/></svg></div><b>Research tool</b><span class="s">An agent that collects real data to answer a question.</span></div>
   </div>
   <div class="ask-end">
     <p class="lbl">Your turn</p>
     <p class="endq">What ideas do you have?</p>
-    <p class="small">Jot one down. You'll pick your capstone on Day 4.</p>
+    <p class="small">Jot one down: "My agent helps ___ with ___." You'll pick your capstone on Day 4.</p>
   </div>
 </section>
 
@@ -542,7 +553,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   var eraItems = document.querySelectorAll('#eras .era'), ei = 0, ebtn = document.getElementById('erabtn');
   ebtn.onclick = function(){
     if(ei < eraItems.length){ eraItems[ei].classList.add('in'); pop(eraItems[ei]); ei++; }
-    if(ei < eraItems.length) ebtn.textContent = 'Next era'; else ebtn.classList.add('hide');
+    if(ei < eraItems.length) ebtn.textContent = 'Next era'; else { ebtn.classList.add('hide'); var et=document.getElementById('eratalk'); et.classList.remove('hide'); pop(et); }
   };
   /* 1b: parts */
   var parts = document.querySelectorAll('#parts .part'), pi = 0, pbtn = document.getElementById('partbtn');
@@ -604,7 +615,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   /* 3: chatbot or agent */
   var ITEMS = [
     {t:'ChatGPT answers your homework question.', a:'chatbot', why:'You ask, it answers, then it waits.'},
-    {t:'Every morning it checks the air and tells the school board which schools should keep recess inside.', a:'agent', why:'A clock starts it, it looks up data and it makes a choice.'},
+    {t:'Every morning it checks the air and tells schools when to keep recess inside.', a:'agent', why:'A clock starts it, it looks up data and it makes a choice.'},
     {t:'A website chat answers questions about a store\'s refund rules.', a:'chatbot', why:'It talks, but it doesn\'t look anything up or act.'},
     {t:'"Find a table for 4 on Friday and book it." And it does.', a:'agent', why:'It plans steps, uses tools and acts. Good ones ask before booking.'}
   ];
@@ -624,7 +635,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
       if(!ok) b.classList.add('is-wrong'); else right++;
       var last = si===ITEMS.length-1;
       fbEl.innerHTML = '<b style="color:' + (ok?'var(--right)':'var(--wrong)') + '">' + (ok?'Yes. ':'It\'s ' + (it.a==='agent'?'an agent':'a chatbot') + '. ') + '</b>' + it.why + (last ? '<br><b>Your score: ' + right + ' of ' + ITEMS.length + '.</b>' : '');
-      if(!last) nextBtn.classList.remove('hide');
+      if(!last) nextBtn.classList.remove('hide'); else { var st=document.getElementById('sorttalk'); st.classList.remove('hide'); pop(st); }
     };
   });
   nextBtn.onclick = function(){
