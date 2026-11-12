@@ -192,6 +192,8 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .hline em{position:absolute;left:0;top:-1.25rem;font-style:normal;font-size:.7rem;font-weight:700;color:var(--ink);background:var(--paper);padding:0 .3rem}
 .orig{display:inline-flex;align-items:center;gap:.7rem;margin-top:.6rem;font-size:.8rem;font-weight:600;color:var(--navy)}
 .orig img{width:7.5rem;border:1px solid var(--line);border-radius:6px}
+.wipe img{display:block;width:100%;max-height:22rem;object-fit:contain;clip-path:inset(0 100% 0 0)}
+.wipe.go img{clip-path:inset(0 0 0 0);transition:clip-path 1.8s cubic-bezier(.3,.7,.3,1)}
 .qpick{margin-top:.2rem}
 .qpick .opt{width:100%;margin-bottom:.5rem;font-size:.95rem}
 .qpick .opt[aria-pressed="true"]{background:var(--navy);color:#fff}
@@ -265,7 +267,6 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <h1 id="t1">Agentic AI for Impact</h1>
     <p class="big">In 8 days, you'll build an <b>AI agent that works on a real problem</b>, for a real person or a cause you care about.</p>
     <div class="row"><button class="btn" type="button" data-go="1">Get started &rarr;</button></div>
-    <p class="meta">About 12 minutes, together as a class.</p>
   </div>
 </section>
 
@@ -347,10 +348,6 @@ p{margin:.35rem 0 .7rem;max-width:40em}
         <button class="opt" type="button" data-run="1">Would solar panels pay off at our school?</button>
         <button class="opt" type="button" data-run="2">Which food bank needs volunteers this Saturday?</button>
       </div>
-      <ul class="legend">
-        <li><span class="k" style="background:var(--navy)"></span><span><b>Tool call:</b> it looks up real data</span></li>
-        <li><span class="k" style="background:var(--wash);border:2px solid var(--line)"></span><span><b>Answer:</b> what it tells the person</span></li>
-      </ul>
       <div class="talk card hide" id="talk2">
         <p class="lbl">Discuss, 2 min</p>
         <div>
@@ -387,16 +384,6 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     </div>
     <div class="row" style="margin-top:.8rem"><button class="btn hide" type="button" id="sortnext">Next</button></div>
   </div>
-  <div class="def hide" id="def">
-    <div>
-      <p class="eq">An agent works in a loop</p>
-      <p>It acts, checks the result and acts again, until the job is done. You'll build one, one piece a day.</p>
-    </div>
-    <figure class="fig card">
-      <img src="https://www-cdn.anthropic.com/images/4zrzovbb/website/58d9f10c985c4eb5d53798dea315f7bb5ab6249e-2401x1000.png" alt="Diagram of an agent loop: a person talks to an AI model, which takes actions in the world, gets feedback and decides when to stop">
-      <figcaption class="credit">How an agent works: it acts, checks the result and acts again. Diagram: Anthropic, <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building effective agents</a> (2024).</figcaption>
-    </figure>
-  </div>
 </section>
 
 <!-- 4 WHY NOW -->
@@ -409,34 +396,28 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <button type="button" role="tab" aria-selected="false" data-tab="3">How many people use AI</button>
   </div>
   <div class="chart card" data-panel="0">
-    <p class="ctitle">Longest software task an AI agent can finish about half the time, in minutes of a skilled person's work</p>
     <div class="bars" id="chart0"></div>
-    <p class="cnote">From about 4 minutes in 2023 to almost 5 hours in late 2025. It has doubled every few months.</p>
-    <p class="credit">Data: METR's time-horizon estimates (<a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">2025 paper</a>, <a href="https://metr.org/evaluations/gpt-5-report/" target="_blank" rel="noopener">GPT-5 report</a>, Claude Opus 4.5 result). METR has since updated its method, so exact numbers shift.</p>
+    <p class="cnote">The longest software task an agent can finish half the time, measured in a person's work time. It keeps doubling.</p>
+    <p class="credit">Source: <a href="https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/" target="_blank" rel="noopener">METR</a>.</p>
   </div>
   <div class="chart card hide" data-panel="1">
-    <p class="ctitle">Share of everyday computer tasks an AI agent finishes on its own (OSWorld)</p>
     <div class="bars" id="chart2"></div>
-    <p class="cnote">From 12% in 2024 to past the human score by late 2025.</p>
-    <p class="credit">Data: <a href="https://arxiv.org/abs/2404.07972" target="_blank" rel="noopener">OSWorld paper</a> (human score 72%), <a href="https://www.anthropic.com/news/developing-computer-use" target="_blank" rel="noopener">Anthropic</a>, <a href="https://openai.com/index/computer-using-agent/" target="_blank" rel="noopener">OpenAI</a>, <a href="https://www.anthropic.com/news/claude-sonnet-4-5" target="_blank" rel="noopener">Anthropic</a>, <a href="https://www.simular.ai/articles/simulars-computer-use-agent-outperforms-humans" target="_blank" rel="noopener">Simular</a>, Claude Fable 5 system card. The test was cleaned up in mid-2025, so later scores aren't exactly comparable.</p>
-    <a class="orig" href="https://os-world.github.io/" target="_blank" rel="noopener"><span>See the original leaderboard &rarr;</span></a>
+    <p class="cnote">Share of everyday computer tasks an agent finishes on its own. Agents passed the human score in late 2025.</p>
+    <p class="credit">Source: <a href="https://os-world.github.io/" target="_blank" rel="noopener">OSWorld</a> and lab reports.</p>
   </div>
   <div class="chart card hide" data-panel="2">
-    <p class="ctitle">Price of GPT-3.5-level AI, in dollars per million tokens (about 750,000 words)</p>
-    <div class="bars" id="chart3"></div>
-    <p class="cnote">280 times cheaper in two years. Agents take many steps, so this is what made them affordable.</p>
-    <p class="credit">Data: Stanford HAI, <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts" target="_blank" rel="noopener">AI Index 2025</a>, using Epoch AI data.</p>
-    <a class="orig" href="https://hai.stanford.edu/assets/images/ai-index-(2).png" target="_blank" rel="noopener"><img src="https://hai.stanford.edu/assets/images/ai-index-(2).png" alt="The original AI Index chart of falling AI prices" loading="lazy"><span>See the original chart &rarr;</span></a>
+    <div class="wipe"><img src="https://hai.stanford.edu/assets/images/ai-index-(2).png" alt="Stanford AI Index chart: the price of using AI at a fixed skill level, falling steeply from 2022 to 2024" loading="lazy"></div>
+    <p class="cnote">Using AI got 280 times cheaper in two years. Agents take many steps, so this made them affordable.</p>
+    <p class="credit">Chart: Stanford HAI, <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts" target="_blank" rel="noopener">AI Index 2025</a>.</p>
   </div>
   <div class="chart card hide" data-panel="3">
-    <p class="ctitle">People using ChatGPT each week, in millions</p>
     <div class="bars" id="chart1"></div>
-    <p class="cnote">From 100 million to 800 million people a week in two years.</p>
-    <p class="credit">Data: OpenAI announcements, reported by <a href="https://techcrunch.com/2025/03/06/chatgpt-doubled-its-weekly-active-users-in-under-6-months-thanks-to-new-releases/" target="_blank" rel="noopener">TechCrunch</a> and <a href="https://www.aol.com/articles/sam-altman-touts-chatgpts-800-091502060.html" target="_blank" rel="noopener">Business Insider</a>.</p>
+    <p class="cnote">People using ChatGPT each week. From 1 million to 1.2 billion in under four years.</p>
+    <p class="credit">Source: OpenAI, via <a href="https://techcrunch.com/2026/02/27/chatgpt-reaches-900m-weekly-active-users" target="_blank" rel="noopener">TechCrunch</a> and <a href="https://fourweekmba.com/ai-chatgpt-12b-weekly-users-devday-2026-distribution/" target="_blank" rel="noopener">DevDay 2026</a>.</p>
   </div>
   <div class="talk card">
     <p class="lbl">Hands up, 2 min</p>
-    <p>What's one job agents will do by the time you graduate? What should they never do?</p>
+    <p>What's one job agents will do by the time you graduate?</p>
   </div>
 </section>
 
@@ -487,9 +468,6 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <li class="card"><span class="num">02 &middot; Days 4 to 7</span><b>How do you build one that's useful and safe?</b></li>
     <li class="card"><span class="num">03 &middot; Day 8</span><b>What impact can your agent make?</b></li>
   </ol>
-  <div class="days" id="days"></div>
-  <div class="keyrow"><span><i></i>Learn the pieces</span><span><i class="c"></i>Your capstone</span></div>
-  <p class="dayq" id="dayq" aria-live="polite"></p>
 </section>
 
 <!-- 7 WHAT YOU'LL BUILD -->
@@ -638,15 +616,10 @@ p{margin:.35rem 0 .7rem;max-width:40em}
       if(!ok) b.classList.add('is-wrong'); else right++;
       var last = si===ITEMS.length-1;
       fbEl.innerHTML = '<b style="color:' + (ok?'var(--right)':'var(--wrong)') + '">' + (ok?'Yes. ':'It\'s ' + (it.a==='agent'?'an agent':'a chatbot') + '. ') + '</b>' + it.why + (last ? '<br><b>Your score: ' + right + ' of ' + ITEMS.length + '.</b>' : '');
-      nextBtn.classList.remove('hide');
-      nextBtn.textContent = si===ITEMS.length-1 ? 'So what makes an agent?' : 'Next';
+      if(!last) nextBtn.classList.remove('hide');
     };
   });
   nextBtn.onclick = function(){
-    if(si===ITEMS.length-1){
-      document.getElementById('sort').classList.add('hide');
-      var d = document.getElementById('def'); d.classList.remove('hide'); pop(d); return;
-    }
     si++; show();
   };
   show();
@@ -655,8 +628,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   var CH = [
     {el:'chart0', unit:'', data:[['GPT-4','2023',4,'4 min'],['Claude 3.7 Sonnet','Feb 2025',60,'1 hr'],['o3','Apr 2025',92,'1.5 hr'],['GPT-5','Aug 2025',137,'2.3 hr'],['Claude Opus 4.5','Nov 2025',289,'4.8 hr']]},
     {el:'chart2', max:100, line:[72,'Humans 72%'], data:[['GPT-4V','Apr 2024',12,'12%'],['Claude 3.5','Oct 2024',15,'15%'],['OpenAI CUA','Jan 2025',38,'38%'],['Sonnet 4.5','Sep 2025',61,'61%'],['Agent S','Dec 2025',73,'73%'],['Claude Fable 5','Jun 2026',85,'85%']]},
-    {el:'chart3', min:1.5, data:[['GPT-3.5','Nov 2022',20,'$20'],['Gemini 1.5 Flash-8B','Oct 2024',0.07,'7¢']]},
-    {el:'chart1', unit:'M', data:[['','Nov 2023',100,'100M'],['','Aug 2024',200,'200M'],['','Dec 2024',300,'300M'],['','Feb 2025',400,'400M'],['','Oct 2025',800,'800M']]}
+    {el:'chart1', min:1.5, data:[['first 5 days','Dec 2022',1,'1M'],['','Nov 2023',100,'100M'],['','Aug 2024',200,'200M'],['','Dec 2024',300,'300M'],['','Oct 2025',800,'800M'],['','Feb 2026',900,'900M'],['','Sep 2026',1200,'1.2B']]}
   ];
   CH.forEach(function(c){
     var max = c.max || Math.max.apply(null, c.data.map(function(d){return d[2];}));
@@ -675,6 +647,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   window.addEventListener('resize', function(){ var p=document.querySelector('[data-panel]:not(.hide)'); if(p) placeLines(p); });
   function grow(panel){
     placeLines(panel);
+    var w = panel.querySelector('.wipe'); if(w){ w.classList.remove('go'); void w.offsetWidth; setTimeout(function(){ w.classList.add('go'); }, reduce?0:100); }
     var fills = panel.querySelectorAll('.bfill');
     fills.forEach(function(f){ f.style.height='0%'; });
     fills.forEach(function(f,i){ setTimeout(function(){ f.style.height = f.dataset.h + '%'; }, reduce?0:150 + i*220); });
@@ -692,29 +665,6 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     var w = document.getElementById('waysbox'); w.classList.remove('hide'); pop(w);
     var x = document.getElementById('examples5'); x.classList.remove('hide');
   };
-  /* 6: map */
-  var DAYS = [
-    {t:'Meet the Machine', q:'How do AI models work, and how do you get them to do what you want?'},
-    {t:'Agents Taking Action', q:'What turns a chatbot into an agent?'},
-    {t:'Memory and Autonomy', q:'How does an agent know things, and how does it work on its own?'},
-    {t:'Capstone Kickoff', q:'Who is your agent for, and how will you know it works?'},
-    {t:'Capstone V1', q:'How do you get your agent working, run after run?'},
-    {t:'Safety and Defense', q:'How can you protect your agent?'},
-    {t:'Red Team + Demo Prep', q:'How do you prove your agent works?'},
-    {t:'Demo Day', q:'Can you show what you built and explain how it works?'}
-  ];
-  var daysEl = document.getElementById('days'), dayq = document.getElementById('dayq');
-  DAYS.forEach(function(x,i){
-    var b = document.createElement('button'); b.type='button'; b.className='day' + (i>2?' cap':''); b.setAttribute('aria-pressed','false');
-    b.innerHTML = '<span class="dn">DAY ' + (i+1) + '</span><b>' + x.t + '</b>';
-    b.onclick = function(){ pickDay(i); };
-    daysEl.appendChild(b);
-  });
-  function pickDay(i){
-    daysEl.querySelectorAll('.day').forEach(function(b,j){ b.setAttribute('aria-pressed', j===i); });
-    dayq.innerHTML = '<b>Day ' + (i+1) + ':</b> ' + DAYS[i].q; pop(dayq);
-  }
-  pickDay(0);
 
   var h = (location.hash||'').replace('#',''), start = slugs.indexOf(h);
   go(start<0?0:start, false);
