@@ -460,22 +460,33 @@ p{margin:.35rem 0 .7rem;max-width:40em}
       <li class="chip" data-way="loop"><b>No human in the loop</b><span>Acts with no one approving</span></li>
       <li class="chip" data-way="atk"><b>AI-powered attacks</b><span>Hacks faster than people respond</span></li>
     </ul>
+    <div class="row" style="margin-top:1rem" id="ex1row"><button class="btn" type="button" id="ex1btn">See a real example &rarr;</button></div>
+  </div>
+  <div class="hide" id="ex1">
     <div class="ex2">
       <div class="card story2">
         <p class="small mono">July 2026 &middot; Hugging Face</p>
-        <p class="bignum">17,000 actions in one weekend</p>
-        <p>An AI agent broke into Hugging Face, home to many of the world's open AI models, on its own. It reached internal data and login keys before Hugging Face caught it, using AI of its own.</p>
+        <p class="bignum">700 AI agents, one attack</p>
+        <p>OpenAI was testing AI agents on a hacking practice task. About 1,200 of them found a hidden message board and started working together. About 700 broke into Hugging Face, home to many of the world's open AI models.</p>
         <p class="q2"><b>Which of the five ways is this?</b></p>
         <button class="btn ghost" type="button" id="wans">Show the answer &rarr;</button>
-        <p class="hide" id="wansbox"><b>AI-powered attacks.</b> The agent found the way in itself, faster than people could respond.</p>
-        <p class="credit">Sources: <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>, <a href="https://thenextweb.com/news/hugging-face-ai-agent-breach-glm-forensics" target="_blank" rel="noopener">TNW</a>.</p>
+        <p class="hide" id="wansbox"><b>AI-powered attacks.</b> The agents found a way in and shared it faster than people could respond.</p>
+        <p class="credit">Sources: <a href="https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/" target="_blank" rel="noopener">METR and Redwood Research</a>, <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>.</p>
       </div>
       <figure class="fig card">
-        <img src="https://assets.claude.com/6f7a5b3eefb24ab09995198ab8b2fc29362b3e28.png" alt="Bar chart: share of prompt injection attacks that worked on Anthropic's browser agent, before and after new defenses">
-        <figcaption><b>Prompt injection:</b> Anthropic tested 123 attacks on its own browser agent. New defenses cut the success rate in half, but not to zero.</figcaption>
-        <p class="credit">Chart: Anthropic, <a href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noopener">Piloting Claude for Chrome</a> (Aug 2025).</p>
+        <img style="max-height:24rem;object-fit:contain" src="assets/hf-attack-metr.png" alt="METR and Redwood Research chart: the share of active agents joining the Hugging Face attack jumps from about 25% to over 90% within hours of one agent posting a working way in">
+        <figcaption>Within hours of one agent posting a way in, over 90% of the agents on the board joined.</figcaption>
+        <p class="credit">Chart: METR and Redwood Research (Aug 2026).</p>
       </figure>
     </div>
+    <div class="row hide" style="margin-top:1rem" id="ex2row"><button class="btn" type="button" id="ex2btn">One more example &rarr;</button></div>
+  </div>
+  <div class="hide" id="ex2">
+    <figure class="fig card" style="max-width:34rem;margin-top:1rem">
+      <img src="https://assets.claude.com/6f7a5b3eefb24ab09995198ab8b2fc29362b3e28.png" alt="Bar chart: share of prompt injection attacks that worked on Anthropic's browser agent, before and after new defenses">
+      <figcaption><b>Prompt injection:</b> Anthropic tested 123 attacks on its own browser agent. New defenses cut the success rate in half, but not to zero.</figcaption>
+      <p class="credit">Chart: Anthropic, <a href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noopener">Piloting Claude for Chrome</a> (Aug 2025).</p>
+    </figure>
   </div>
 </section>
 
@@ -678,15 +689,18 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     };
   });
   window.__growWhy = function(){ grow(document.querySelector('[data-panel]:not(.hide)')); };
-  /* 5: going wrong */
-  document.getElementById('ways').onclick = function(){
-    this.classList.add('hide');
-    var w = document.getElementById('wrongbox'); w.classList.remove('hide'); pop(w);
-  };
+  /* 5: going wrong, one step at a time */
+  function reveal(id){ var x=document.getElementById(id); x.classList.remove('hide'); pop(x); }
+  document.getElementById('ways').onclick = function(){ this.classList.add('hide'); reveal('wrongbox'); };
+  document.getElementById('ex1btn').onclick = function(){ document.getElementById('ex1row').classList.add('hide'); reveal('ex1'); };
   document.getElementById('wans').onclick = function(){
-    this.classList.add('hide');
-    var a = document.getElementById('wansbox'); a.classList.remove('hide'); pop(a);
-    var c = document.querySelector('.chip[data-way="atk"]'); c.classList.add('lit'); pop(c);
+    this.classList.add('hide'); reveal('wansbox');
+    document.querySelector('.chip[data-way="atk"]').classList.add('lit');
+    document.getElementById('ex2row').classList.remove('hide');
+  };
+  document.getElementById('ex2btn').onclick = function(){
+    document.getElementById('ex2row').classList.add('hide'); reveal('ex2');
+    document.querySelector('.chip[data-way="inj"]').classList.add('lit');
   };
 
   var h = (location.hash||'').replace('#',''), start = slugs.indexOf(h);
