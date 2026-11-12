@@ -190,6 +190,8 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .bars{display:grid;grid-template-columns:repeat(5,1fr);gap:1rem;height:12rem;align-items:end;position:relative}
 .hline{position:absolute;left:0;right:0;border-top:2px dashed var(--peach);pointer-events:none}
 .hline em{position:absolute;left:0;top:-1.25rem;font-style:normal;font-size:.7rem;font-weight:700;color:var(--ink);background:var(--paper);padding:0 .3rem}
+.orig{display:inline-flex;align-items:center;gap:.7rem;margin-top:.6rem;font-size:.8rem;font-weight:600;color:var(--navy)}
+.orig img{width:7.5rem;border:1px solid var(--line);border-radius:6px}
 .qpick{margin-top:.2rem}
 .qpick .opt{width:100%;margin-bottom:.5rem;font-size:.95rem}
 .qpick .opt[aria-pressed="true"]{background:var(--navy);color:#fff}
@@ -417,12 +419,14 @@ p{margin:.35rem 0 .7rem;max-width:40em}
     <div class="bars" id="chart2"></div>
     <p class="cnote">From 12% in 2024 to past the human score by late 2025.</p>
     <p class="credit">Data: <a href="https://arxiv.org/abs/2404.07972" target="_blank" rel="noopener">OSWorld paper</a> (human score 72%), <a href="https://www.anthropic.com/news/developing-computer-use" target="_blank" rel="noopener">Anthropic</a>, <a href="https://openai.com/index/computer-using-agent/" target="_blank" rel="noopener">OpenAI</a>, <a href="https://www.anthropic.com/news/claude-sonnet-4-5" target="_blank" rel="noopener">Anthropic</a>, <a href="https://www.simular.ai/articles/simulars-computer-use-agent-outperforms-humans" target="_blank" rel="noopener">Simular</a>, Claude Fable 5 system card. The test was cleaned up in mid-2025, so later scores aren't exactly comparable.</p>
+    <a class="orig" href="https://os-world.github.io/" target="_blank" rel="noopener"><span>See the original leaderboard &rarr;</span></a>
   </div>
   <div class="chart card hide" data-panel="2">
     <p class="ctitle">Price of GPT-3.5-level AI, in dollars per million tokens (about 750,000 words)</p>
     <div class="bars" id="chart3"></div>
     <p class="cnote">280 times cheaper in two years. Agents take many steps, so this is what made them affordable.</p>
     <p class="credit">Data: Stanford HAI, <a href="https://hai.stanford.edu/news/ai-index-2025-state-of-ai-in-10-charts" target="_blank" rel="noopener">AI Index 2025</a>, using Epoch AI data.</p>
+    <a class="orig" href="https://hai.stanford.edu/assets/images/ai-index-(2).png" target="_blank" rel="noopener"><img src="https://hai.stanford.edu/assets/images/ai-index-(2).png" alt="The original AI Index chart of falling AI prices" loading="lazy"><span>See the original chart &rarr;</span></a>
   </div>
   <div class="chart card hide" data-panel="3">
     <p class="ctitle">People using ChatGPT each week, in millions</p>
