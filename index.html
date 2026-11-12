@@ -198,6 +198,14 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .orig img{width:7.5rem;border:1px solid var(--line);border-radius:6px}
 .wipe img{display:block;width:100%;max-height:22rem;object-fit:contain;clip-path:inset(0 100% 0 0)}
 .wipe.go img{clip-path:inset(0 0 0 0);transition:clip-path 1.8s cubic-bezier(.3,.7,.3,1)}
+.chips{list-style:none;padding:0;margin:1.1rem 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem}
+.chip{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--peach);border-radius:10px;padding:.55rem .75rem;transition:background .3s}
+.chip b{display:block;font-size:.88rem;color:var(--navy)}
+.chip span{font-size:.78rem;color:var(--soft);line-height:1.35;display:block}
+.chip.lit{background:var(--navy);border-color:var(--navy)}
+.chip.lit b,.chip.lit span{color:#fff}
+.bignum{font-family:"Martian Mono",ui-monospace,monospace;font-weight:700;font-size:1.6rem;color:var(--navy);line-height:1.25;margin:.3rem 0 .6rem}
+.q2{margin:.8rem 0 .5rem}
 .qpick{margin-top:.2rem}
 .qpick .opt{width:100%;margin-bottom:.5rem;font-size:.95rem}
 .qpick .opt[aria-pressed="true"]{background:var(--navy);color:#fff}
@@ -225,7 +233,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .ask-end{margin-top:2rem}
 .ask-end .lbl{font-size:.72rem;font-weight:700;color:var(--navy);margin:0}
 .endq{font-family:"Martian Mono",ui-monospace,monospace;font-weight:700;font-size:1.7rem;color:var(--navy);margin:.2rem 0 .3rem}
-@media (max-width: 900px){ .ways{grid-template-columns:1fr 1fr} .ex2,.ex3{grid-template-columns:1fr} .blab{min-height:3.2rem} .bars{height:12rem;gap:.4rem} .endq{font-size:1.3rem} }
+@media (max-width: 900px){ .ways{grid-template-columns:1fr 1fr} .ex2,.ex3{grid-template-columns:1fr} .chips{grid-template-columns:1fr 1fr} .blab{min-height:3.2rem} .bars{height:12rem;gap:.4rem} .endq{font-size:1.3rem} }
 
 /* parts */
 .parts{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-top:1.4rem}
@@ -430,34 +438,30 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   <h2 id="t5">When agents go wrong</h2>
   <div class="talk card" style="margin-top:.6rem">
     <p class="lbl">Discuss, 2 min</p>
-    <p>An agent can look things up and act on its own. How could that go wrong? Name as many ways as you can.</p>
+    <p>An agent can act on its own. How could that go wrong?</p>
     <button class="btn ghost" type="button" id="ways">Show five ways &rarr;</button>
   </div>
-  <div class="ways hide" id="waysbox">
-    <div class="card way"><b>Hallucinations</b><span>It makes up facts or numbers, sounds sure, then acts on them.</span></div>
-    <div class="card way"><b>Prompt injection</b><span>It follows orders hidden in a web page, email or file it reads.</span></div>
-    <div class="card way"><b>Excessive permissions</b><span>It can reach more than its task needs, so one mistake hits real data.</span></div>
-    <div class="card way"><b>No human in the loop</b><span>It deletes, pays or sends with no one approving first.</span></div>
-    <div class="card way"><b>AI-powered attacks</b><span>It finds and uses security holes faster than people can respond.</span></div>
-  </div>
-  <div class="hide" id="examples5">
-    <p class="small" style="margin-top:1.4rem">Which of the five ways shows up in each story?</p>
-    <div class="ex2 ex3">
-        <div class="card story2">
-          <p class="small mono">April 2026</p>
-          <h3>The 9-second mistake</h3>
-          <p>A coding agent was fixing a small problem in a test system. It had a key that also opened the company's live system. <b>It deleted the live database and its backups in 9 seconds.</b> Nobody asked it to.</p>
-          <p class="credit">Sources: <a href="https://www.techspot.com/news/112207-ai-coding-agent-running-claude-wiped-startup-database.html" target="_blank" rel="noopener">TechSpot</a>, <a href="https://decrypt.co/365897/ai-agent-deletes-startup-database-9-seconds-founder-says" target="_blank" rel="noopener">Decrypt</a>.</p>
-        </div>
-        <div class="card story2">
-          <p class="small mono">July 2026</p>
-          <h3>An AI agent hacks Hugging Face</h3>
-          <p>Hugging Face hosts many of the world's open AI models. Over one weekend, an AI agent broke in on its own. <b>It took over 17,000 actions</b> and reached internal data and login keys. Hugging Face caught it using AI.</p>
-          <p class="credit">Sources: <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>, <a href="https://thenextweb.com/news/hugging-face-ai-agent-breach-glm-forensics" target="_blank" rel="noopener">TNW</a>.</p>
-        </div>
+  <div class="hide" id="wrongbox">
+    <ul class="chips" id="chips">
+      <li class="chip" data-way="hall"><b>Hallucinations</b><span>Makes things up, then acts</span></li>
+      <li class="chip" data-way="inj"><b>Prompt injection</b><span>Hidden orders in what it reads</span></li>
+      <li class="chip" data-way="perm"><b>Excessive permissions</b><span>More access than its job needs</span></li>
+      <li class="chip" data-way="loop"><b>No human in the loop</b><span>Acts with no one approving</span></li>
+      <li class="chip" data-way="atk"><b>AI-powered attacks</b><span>Hacks faster than people respond</span></li>
+    </ul>
+    <div class="ex2">
+      <div class="card story2">
+        <p class="small mono">July 2026 &middot; Hugging Face</p>
+        <p class="bignum">17,000 actions in one weekend</p>
+        <p>An AI agent broke into Hugging Face, home to many of the world's open AI models, on its own. It reached internal data and login keys before Hugging Face caught it, using AI of its own.</p>
+        <p class="q2"><b>Which of the five ways is this?</b></p>
+        <button class="btn ghost" type="button" id="wans">Show the answer &rarr;</button>
+        <p class="hide" id="wansbox"><b>AI-powered attacks.</b> The agent found the way in itself, faster than people could respond.</p>
+        <p class="credit">Sources: <a href="https://www.bleepingcomputer.com/news/security/hugging-face-breach-autonomous-ai-agent-system-internal-datasets-credentials/" target="_blank" rel="noopener">BleepingComputer</a>, <a href="https://thenextweb.com/news/hugging-face-ai-agent-breach-glm-forensics" target="_blank" rel="noopener">TNW</a>.</p>
+      </div>
       <figure class="fig card">
-        <img src="https://assets.claude.com/6f7a5b3eefb24ab09995198ab8b2fc29362b3e28.png" alt="Bar chart: share of attacks that tricked Anthropic's browser agent, before and after new defenses">
-        <figcaption><b>Prompt injection:</b> Anthropic attacked its own browser agent 123 ways. Better defenses cut the success rate in half, but not to zero.</figcaption>
+        <img src="https://assets.claude.com/6f7a5b3eefb24ab09995198ab8b2fc29362b3e28.png" alt="Bar chart: share of prompt injection attacks that worked on Anthropic's browser agent, before and after new defenses">
+        <figcaption><b>Prompt injection:</b> Anthropic tested 123 attacks on its own browser agent. New defenses cut the success rate in half, but not to zero.</figcaption>
         <p class="credit">Chart: Anthropic, <a href="https://www.anthropic.com/news/claude-for-chrome" target="_blank" rel="noopener">Piloting Claude for Chrome</a> (Aug 2025).</p>
       </figure>
     </div>
@@ -666,8 +670,12 @@ p{margin:.35rem 0 .7rem;max-width:40em}
   /* 5: going wrong */
   document.getElementById('ways').onclick = function(){
     this.classList.add('hide');
-    var w = document.getElementById('waysbox'); w.classList.remove('hide'); pop(w);
-    var x = document.getElementById('examples5'); x.classList.remove('hide');
+    var w = document.getElementById('wrongbox'); w.classList.remove('hide'); pop(w);
+  };
+  document.getElementById('wans').onclick = function(){
+    this.classList.add('hide');
+    var a = document.getElementById('wansbox'); a.classList.remove('hide'); pop(a);
+    var c = document.querySelector('.chip[data-way="atk"]'); c.classList.add('lit'); pop(c);
   };
 
   var h = (location.hash||'').replace('#',''), start = slugs.indexOf(h);
