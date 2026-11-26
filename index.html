@@ -255,7 +255,7 @@ p{margin:.35rem 0 .7rem;max-width:40em}
 .era:not(.in) > *{visibility:hidden}
 .era.in{opacity:1;border-top:4px solid var(--navy)}
 .era.now.in{border-top-color:var(--peach)}
-.eimg svg{width:100%;max-width:7rem;height:auto;display:block;margin-bottom:.5rem}
+.eimg img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:8px;margin-bottom:.6rem;background:#eee}
 .eyrs{font-family:"Space Mono",ui-monospace,monospace;font-size:.62rem;letter-spacing:.12em;color:var(--soft);margin:0}
 .era h3{font-size:1rem;margin:.1rem 0 .4rem}
 .ehow{font-size:.8rem;font-weight:600;margin:0 0 .4rem}
@@ -334,7 +334,7 @@ h2{color:#26285A}
   <p class="lead">Five eras of AI, and what made each one possible.</p>
   <ol class="eras" id="eras">
     <li class="era card">
-      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><rect x="4" y="22" width="24" height="16" rx="3" fill="none" stroke="#2E3066" stroke-width="2.5"/><text x="16" y="34" font-size="9" text-anchor="middle" fill="#2E3066" font-family="monospace" font-weight="700">IF</text><path d="M28 30h10" stroke="#2E3066" stroke-width="2.5"/><path d="M48 18l10 12-10 12-10-12z" fill="none" stroke="#2E3066" stroke-width="2.5"/><path d="M58 30l8-14h18M58 30l8 14h18" fill="none" stroke="#2E3066" stroke-width="2.5"/><circle cx="84" cy="16" r="3" fill="#F6B48A"/><circle cx="84" cy="44" r="3" fill="#2E3066"/></svg></div>
+      <div class="eimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Eniac.jpg/640px-Eniac.jpg" alt="ENIAC, one of the first computers, filling a room with switches and cables" loading="lazy"></div>
       <p class="eyrs">1950s to 1990s</p>
       <h3>Symbolic AI</h3>
       <p class="ehow">People write the rules. The computer follows them.</p>
@@ -342,7 +342,7 @@ h2{color:#26285A}
       <ul class="eex"><li><span class="ey">1956</span>The name "artificial intelligence" is coined.</li><li><span class="ey">1997</span>Deep Blue beats the chess champion by searching millions of moves.</li></ul>
     </li>
     <li class="era card">
-      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M8 52h76M8 52V6" stroke="#2E3066" stroke-width="2.5"/><circle cx="18" cy="44" r="3" fill="#2E3066"/><circle cx="26" cy="40" r="3" fill="#2E3066"/><circle cx="32" cy="42" r="3" fill="#2E3066"/><circle cx="40" cy="33" r="3" fill="#2E3066"/><circle cx="46" cy="35" r="3" fill="#2E3066"/><circle cx="54" cy="26" r="3" fill="#2E3066"/><circle cx="60" cy="28" r="3" fill="#2E3066"/><circle cx="68" cy="18" r="3" fill="#2E3066"/><circle cx="74" cy="20" r="3" fill="#2E3066"/><path d="M14 48L80 12" stroke="#F6B48A" stroke-width="3" stroke-linecap="round"/></svg></div>
+      <div class="eimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Datove_centrum_TCP.jpg/640px-Datove_centrum_TCP.jpg" alt="Rows of servers in a data center" loading="lazy"></div>
       <p class="eyrs">1990s to 2010s</p>
       <h3>Machine learning</h3>
       <p class="ehow">The computer learns patterns from examples.</p>
@@ -350,7 +350,7 @@ h2{color:#26285A}
       <ul class="eex"><li><span class="ey">2000s</span>Spam filters learn from millions of emails.</li></ul>
     </li>
     <li class="era card">
-      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M12 14L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 14L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 30L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 10" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 23" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 37" stroke="#B6B9E2" stroke-width="1.2"/><path d="M12 46L40 50" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 10L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 23L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 37L68 46" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 14" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 30" stroke="#B6B9E2" stroke-width="1.2"/><path d="M40 50L68 46" stroke="#B6B9E2" stroke-width="1.2"/><circle cx="12" cy="14" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="12" cy="30" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="12" cy="46" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="10" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="23" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="37" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="40" cy="50" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="14" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="30" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><circle cx="68" cy="46" r="5" fill="#fff" stroke="#2E3066" stroke-width="2.5"/><rect x="78" y="22" width="10" height="16" rx="2" fill="#F6B48A"/></svg></div>
+      <div class="eimg"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/NVIDIA-GTX-1070-FoundersEdition-FL.jpg/640px-NVIDIA-GTX-1070-FoundersEdition-FL.jpg" alt="A GPU graphics card" loading="lazy"></div>
       <p class="eyrs">2012 on</p>
       <h3>Deep learning</h3>
       <p class="ehow">Big neural networks learn from huge amounts of data.</p>
@@ -358,7 +358,7 @@ h2{color:#26285A}
       <ul class="eex"><li><span class="ey">2012</span>A network learns to recognize photos, not rules.</li><li><span class="ey">2016</span>AlphaGo masters Go by trial and reward.</li></ul>
     </li>
     <li class="era card">
-      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><path d="M8 8h56a6 6 0 0 1 6 6v22a6 6 0 0 1-6 6H30l-12 10v-10h-10a6 6 0 0 1-6-6V14a6 6 0 0 1 6-6z" fill="none" stroke="#2E3066" stroke-width="2.5"/><path d="M16 19h40M16 26h32M16 33h22" stroke="#2E3066" stroke-width="2.5" stroke-linecap="round"/><path d="M78 10l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#F6B48A"/></svg></div>
+      <div class="eimg"><img src="https://images.unsplash.com/photo-1681460590033-67b0d1413550?fm=jpg&q=70&w=640&auto=format&fit=crop" alt="ChatGPT open on a phone" loading="lazy"></div>
       <p class="eyrs">2017 on</p>
       <h3>Generative AI</h3>
       <p class="ehow">Models create text, images and code.</p>
@@ -366,7 +366,7 @@ h2{color:#26285A}
       <ul class="eex"><li><span class="ey">2017</span>Transformers: the T in GPT.</li><li><span class="ey">2022</span>ChatGPT: anyone can chat with a model.</li></ul>
     </li>
     <li class="era card now">
-      <div class="eimg"><svg viewBox="0 0 90 60" aria-hidden="true"><circle cx="45" cy="30" r="20" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-dasharray="20 6"/><path d="M60 13l5 5-7 2" fill="none" stroke="#2E3066" stroke-width="2.5" stroke-linejoin="round"/><circle cx="45" cy="10" r="5" fill="#F6B48A"/><circle cx="63" cy="40" r="5" fill="#2E3066"/><circle cx="27" cy="40" r="5" fill="#2E3066"/></svg></div>
+      <div class="eimg"><img src="https://images.unsplash.com/photo-1756069596712-3f3ea20ae921?fm=jpg&q=70&w=640&auto=format&fit=crop" alt="A self-driving car on a city street" loading="lazy"></div>
       <p class="eyrs">Now</p>
       <h3>Agentic AI</h3>
       <p class="ehow">AI uses tools, makes choices and acts.</p>
